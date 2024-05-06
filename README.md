@@ -1,7 +1,5 @@
 # CanteenApp
 
-**Project Title: Canteen Management System**
-
 **Overview**
 
 * A comprehensive solution to streamline canteen operations, providing both a robust backend API and a user-friendly Electron-based desktop application.
