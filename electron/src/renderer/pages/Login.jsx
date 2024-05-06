@@ -13,8 +13,18 @@ const Login = () => {
   const passwordRef = useRef();
   const submitRef = useRef();
 
-  const login = (username, password) => {
-    fetch('http://localhost:3000/api/login', {
+  const appendError = (error) => {
+    const errorElement = document.createElement('p');
+    errorElement.classList.add('bg-red-500', 'text-sm', 'text-white', 'text-lg' ,'p-2', 'px-4', 'rounded-lg', 'font-light', 'text-center', 'cursor-default', 'fixed', 'bottom-4', 'right-4');
+    errorElement.innerText = error + ' ' + '⚠️';
+    submitRef.current.parentElement.appendChild(errorElement);
+    setTimeout(() => {
+      errorElement.remove();
+    }, 2500);
+  }
+
+  const loginAPI = (username, password) => {
+    fetch('http://localhost:3000/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -23,8 +33,16 @@ const Login = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Success:', data);
-        localStorage.setItem('user', JSON.stringify(data));
+        console.log('Output:', data);
+        if (data.error) {
+          submitRef.current.classList.remove('animate-pulse', 'grayscale', 'cursor-default');
+          appendError(data.error);
+          return;
+        }
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+        }
+        navigate('/home');
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -44,10 +62,10 @@ const Login = () => {
             }
             submitRef.current.classList.add('animate-pulse', 'grayscale', 'cursor-default');
             setTimeout(() => {
-              login(usernameRef.current.value, passwordRef.current.value);
-              navigate("/home");
+              loginAPI(usernameRef.current.value, passwordRef.current.value);
+              // navigate("/home");
             }, 2500);
-          }} type="submit" className="p-4 border border-zinc-300 rounded-lg bg-green-500 hover:brightness-95 text-white font-semibold">Login</button>
+          }} type="submit" className="px-4 p-2 border border-green-600 rounded-lg bg-green-500 hover:brightness-95 text-white font-semibold">Login</button>
         </div>
       </main>
       <Footer data={{ disabled: true }} />

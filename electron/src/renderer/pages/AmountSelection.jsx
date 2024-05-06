@@ -54,7 +54,8 @@ const AmountSelection = () => {
                   value={inputValue}
                   placeholder="Custom Amount (103 DH)"
                   className="flex w-full justify-center items-center gap-x-2 focus:outline-none bg-transparent"
-                  type="text"
+                  type="number"
+                  min={0}
                 />
               </div>
               <button onClick={(e) => {
