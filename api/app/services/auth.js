@@ -2,11 +2,6 @@ import User from '../models/user.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-function randomCardId() {
-    const cardId = Math.floor(Math.random() * 9000000000) + 1000000000;
-    return cardId.toString();
-}
-
 export const loginService = async (username, password) => {
     const user = await User.findOne({
         username: username

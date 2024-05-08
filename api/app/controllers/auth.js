@@ -9,6 +9,7 @@ export const login = async (req, res) => {
         const user = await User.findOne({ username: username });
         if (user.role === 'student') {
             res.status(401).json({ error: 'You are not authorized to access this resource' });
+            return;
         }
         res.json({ token });
     } catch (error) {

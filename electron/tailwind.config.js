@@ -10,7 +10,11 @@ module.exports = {
       // import all colors for a wide range of pick
       ...colors,
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'background': "url('/assets/canteen_back.png')",
+      }
+    },
   },
   plugins: [],
 };
