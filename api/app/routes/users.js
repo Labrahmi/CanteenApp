@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.get('/', cacheNoStore, /* authMiddleware, */ controller.listUsers);
 router.get('/:username', cacheNoStore, /* authMiddleware, */ controller.getUser);
+router.post('/:username/addBalance', cacheNoStore, /* authMiddleware, */ controller.addBalance);
 
 export default router;

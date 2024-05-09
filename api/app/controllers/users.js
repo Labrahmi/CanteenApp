@@ -1,4 +1,4 @@
-import { getAllUsers, getUserByUsername } from '../services/users.js';
+import { getAllUsers, getUserByUsername, addBalanceByUserName } from '../services/users.js';
 
 export const listUsers = async (req, res) => {
   try {
@@ -29,7 +29,22 @@ export const getUser = async (req, res) => {
     res.json(user);
   }
   catch (err) {
-    res.status(404).send(err.message);
+    res.status(404).json({ error: err.message });
+  }
+}
+
+export const addBalance = async (req, res) => {
+  try {
+    let username = req.params.username;
+    let amount = req.query.amount;
+    if (!username || !amount) {
+      res.status(400).json({ error: "Username and Amount are required" });
+      return;
+    }
+    await addBalanceByUserName(username, amount);
+    res.json({ success: "Balance Added Successfully" });
+  } catch (err) {
+    res.status(404).json({ error: err.message });
   }
 }
 

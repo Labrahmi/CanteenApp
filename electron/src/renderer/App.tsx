@@ -8,6 +8,7 @@ import RegiserCard from './pages/RegisterCard';
 import CardPlacement from './pages/cardPlacement';
 import CardPlacementSuccess from './pages/cardPlacementSuccess';
 import Login from './pages/Login';
+import AmountSuccess from './pages/AmountSuccess';
 //
 import AppProvider from './providers/app';
 
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/card-placement" element={<CardPlacement />} />
           <Route path="/card-placement/success" element={<CardPlacementSuccess />} />
           <Route path="/card-placement/success/amount-selection" element={<AmountSelection />} />
+          <Route path="/card-placement/success/amount-selection/success" element={<AmountSuccess />} />
           {/*  */}
           <Route path="*" element={<div>404</div>} />
         </Routes>

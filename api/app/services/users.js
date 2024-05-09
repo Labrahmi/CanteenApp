@@ -9,3 +9,14 @@ export const getUserByUsername = async (username) => {
         username: username
     });
 }
+
+export const addBalanceByUserName = async(username, amount) => {
+    let user = await User.findOne({
+        username: username
+    });
+    if (!user) {
+        throw new Error('User not found');
+    }
+    user.balance += Number(amount);
+    await user.save();
+}

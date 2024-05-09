@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Footer from "renderer/components/Footer";
 import Header from "renderer/components/Header";
 
 const AmountSelection = (data) => {
+
+  const navigate = useNavigate();
 
   let [user, setUser] = useState({
     _id: "0",
@@ -36,9 +38,10 @@ const AmountSelection = (data) => {
   let [selectedOption, setSelectedOption] = useState(null);
   //
 
+  const username = params.get('username');
+
   useEffect(() => {
     //
-    const username = params.get('username');
     async function fetchUser() {
       let response = await fetch(`http://127.0.0.1:3000/api/users/${username}`);
       let user = await response.json();
@@ -68,6 +71,28 @@ const AmountSelection = (data) => {
     choice_3_ref.current.classList.remove('invert');
     choices_ref[c - 1].current.classList.add('invert');
     submitButtonRef.current.classList.add('invert', 'font-semibold');
+  }
+
+  const appendError = (error) => {
+    const errorElement = document.createElement('p');
+    errorElement.classList.add('bg-red-500', 'text-lg', 'text-white', 'text-lg', 'p-3', 'px-5', 'rounded-lg', 'font-light', 'text-center', 'cursor-default', 'fixed', 'bottom-4', 'right-4');
+    errorElement.innerText = error + ' ' + '👮‍♂️';
+    window.document.body.appendChild(errorElement);
+    setTimeout(() => {
+      errorElement.remove();
+    }, 4000);
+  }
+
+  const addBalanceToCard = async () => {
+    let status = await fetch(`http://127.0.0.1:3000/api/users/${username}/addBalance?amount=${amount}`, {
+      method: "POST"
+    });
+    if (status.status == 200) {
+      navigate("./success");
+    } else {
+      console.log(status);
+      appendError("an error occurred");
+    }
   }
 
   return (
@@ -164,7 +189,11 @@ const AmountSelection = (data) => {
                 }} className={"bg-zinc-50 p-3 rounded-lg border flex justify-center items-center gap-x-2 font-thin my-2 transition-all ease-in-out duration-200"}>clear</button>
                 <button onClick={(e) => {
                   if (amount != 0) {
-                    alert(amount);
+                    if (confirm("Are you sure?")) {
+                      e.currentTarget.classList.add('animate-pulse', 'cursor-default');
+                      e.currentTarget.disabled = true;
+                      addBalanceToCard();
+                    }
                   }
                 }} ref={submitButtonRef} className={"bg-zinc-50 p-3 rounded-lg border flex justify-center items-center gap-x-2 my-2 transition-all ease-in-out duration-200 w-full"}>Submit</button>
               </div>
