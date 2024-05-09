@@ -1,26 +1,74 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import Footer from "renderer/components/Footer";
 import Header from "renderer/components/Header";
 
 const AmountSelection = (data) => {
 
-  const { state } = useLocation();
+  let [user, setUser] = useState({
+    _id: "0",
+    name: "null",
+    username: "null",
+    password: "null",
+    cardId: "null",
+    balance: "null",
+    role: "null"
+  });
+
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+
+  const choice_1_ref = useRef(null);
+  const choice_2_ref = useRef(null);
+  const choice_3_ref = useRef(null);
+  const submitButtonRef = useRef(null);
+  const amountInputRef = useRef(null);
+
+  const choices_ref = [choice_1_ref, choice_2_ref, choice_3_ref];
 
   let defaultClasses = "bg-zinc-50 p-3 rounded-lg border flex justify-center items-center gap-x-2 font-thin my-2 transition-all ease-in-out duration-200 cursor-default";
   let defaultOptionsClasses = "bg-zinc-50 p-3 rounded-lg border flex justify-center items-center gap-x-2 transition-all ease-in-out duration-200";
 
+  //
   let [amount, setAmount] = useState(0);
   let [inputValue, setInputValue] = useState("");
   let [customClasses, setCustomClasses] = useState(defaultClasses);
-
   let [selectedOption, setSelectedOption] = useState(null);
+  //
 
   useEffect(() => {
-    setTimeout(() => {
-      console.log(state);
-    }, 1000);
-  }, [])
+    //
+    const username = params.get('username');
+    async function fetchUser() {
+      let response = await fetch(`http://127.0.0.1:3000/api/users/${username}`);
+      let user = await response.json();
+      setUser(user);
+    }
+    fetchUser();
+    //
+  }, []);
+
+  //
+  const styleChanger = (c) => {
+
+    if (c == 1) {
+      setAmount(150);
+    }
+    //
+    if (c == 2) {
+      setAmount(300);
+    }
+    //
+    if (c == 3) {
+      setAmount(1200);
+    }
+
+    choice_1_ref.current.classList.remove('invert');
+    choice_2_ref.current.classList.remove('invert');
+    choice_3_ref.current.classList.remove('invert');
+    choices_ref[c - 1].current.classList.add('invert');
+    submitButtonRef.current.classList.add('invert', 'font-semibold');
+  }
 
   return (
     <div className="font-light p-6 flex flex-col justify-between min-h-screen gap-y-4">
@@ -37,10 +85,10 @@ const AmountSelection = (data) => {
                       d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   </svg>
                   <div className="">
-                    <h1 className="font-semibold text-xl">USER NAME<span className="font-light"> / SN63</span></h1>
-                    <h2>Role: <span className="font-semibold">Student</span></h2>
-                    <h2>Card ID: <span className="font-semibold">123456789</span></h2>
-                    <h2>Balance: <span className="font-semibold">500.00 <span className="text-lg">DH</span></span></h2>
+                    <h1 className="font-semibold text-xl">{user.name}</h1>
+                    <h2>Role: <span className="font-semibold">{user.role}</span></h2>
+                    <h2>Card ID: <span className="font-semibold">{user.cardId}</span></h2>
+                    <h2>Balance: <span className="font-semibold">{user.balance} <span className="text-lg">DH</span></span></h2>
                   </div>
                 </div>
               </div>
@@ -52,13 +100,17 @@ const AmountSelection = (data) => {
             <div className="flex flex-col gap-y-4 mt-4">
               <div className="flex justify-between p-6 items-center gap-y-4 gap-4 border bg-zinc-50 rounded-lg overflow-hidden">
                 <input
+                  ref={amountInputRef}
                   onChange={(e) => {
-                    var intValue = 0;
-                    setInputValue(e.target.value);
-                    if (e.target.value > 0) {
-                      setCustomClasses("bg-zinc-50 p-3 rounded-lg border flex justify-center items-center gap-x-2 font-thin my-2 transition-all ease-in-out duration-200 bg-pink-500 text-white font-bold");
+                    choices_ref.forEach(element => {
+                      element.current.classList.remove('invert');
+                    });
+                    setInputValue(amountInputRef.current.value);
+                    setAmount(amountInputRef.current.value);
+                    if (amountInputRef.current.value > 0) {
+                      submitButtonRef.current.classList.add('invert', 'font-semibold', 'cursor-pointer');
                     } else {
-                      setCustomClasses(defaultClasses);
+                      submitButtonRef.current.classList.remove('invert', 'font-semibold', 'cursor-pointer');
                     }
                   }}
                   value={inputValue}
@@ -68,39 +120,54 @@ const AmountSelection = (data) => {
                   min={0}
                 />
               </div>
-              <button onClick={(e) => {
+              <button ref={choice_1_ref} onClick={(e) => {
                 setSelectedOption(1);
+                styleChanger(1);
               }} className={defaultOptionsClasses}>
                 <div className="font-thin">
                   Enough for <span className="font-normal">5 meals</span>
                 </div>
                 <div className="font-medium bg-zinc-100 border p-2 rounded-lg">
-                  225.00 <span className="font-normal">DH</span>{" "}
+                  150.00 <span className="font-normal">DH</span>{" "}
                 </div>
               </button>
-              <button onClick={(e) => {
+              <button ref={choice_2_ref} onClick={(e) => {
                 setSelectedOption(2);
+                styleChanger(2);
               }} className={defaultOptionsClasses}>
                 <div className="font-thin">
                   <span className="font-normal">1-week</span> allowance
                 </div>
                 <div className="font-medium bg-zinc-100 border p-2 rounded-lg">
-                  675.00 <span className="font-normal">DH</span>{" "}
+                  300.00 <span className="font-normal">DH</span>{" "}
                 </div>
               </button>
-              <button onClick={(e) => {
+              <button ref={choice_3_ref} onClick={(e) => {
                 setSelectedOption(3);
+                styleChanger(3);
               }} className={defaultOptionsClasses}>
                 <div className="font-thin">
                   <span className="font-normal">1 month</span> allowance
                 </div>
                 <div className="font-medium bg-zinc-100 border p-2 rounded-lg">
-                  2700.00 <span className="font-normal">DH</span>{" "}
+                  1200.00 <span className="font-normal">DH</span>{" "}
                 </div>
               </button>
-              <button className={customClasses}>
-                Submit
-              </button>
+              <div className='w-full flex gap-2'>
+                <button onClick={(e) => {
+                  choices_ref.forEach(element => {
+                    element.current.classList.remove("invert");
+                    setInputValue("");
+                    submitButtonRef.current.classList.remove('invert', 'font-semibold', 'cursor-pointer');
+                    setAmount(0);
+                  });
+                }} className={"bg-zinc-50 p-3 rounded-lg border flex justify-center items-center gap-x-2 font-thin my-2 transition-all ease-in-out duration-200"}>clear</button>
+                <button onClick={(e) => {
+                  if (amount != 0) {
+                    alert(amount);
+                  }
+                }} ref={submitButtonRef} className={"bg-zinc-50 p-3 rounded-lg border flex justify-center items-center gap-x-2 my-2 transition-all ease-in-out duration-200 w-full"}>Submit</button>
+              </div>
             </div>
           </div>
         </div>

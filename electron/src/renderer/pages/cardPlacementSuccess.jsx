@@ -5,21 +5,24 @@ import Header from 'renderer/components/Header';
 
 const cardPlacementSuccess = () => {
 
-  let [user, setUser] = useState(null);
+  let [user, setUser] = useState({
+    _id: "0",
+    name: "null",
+    username: "null",
+    password: "null",
+    cardId: "null",
+    balance: "null",
+    role: "null"
+  });
 
   useEffect(() => {
     async function fetchUser() {
-      let response = await fetch('http://127.0.0.1:3000/api/users/admin');
+      let response = await fetch('http://127.0.0.1:3000/api/users/student');
       let user = await response.json();
       setUser(user);
     }
     fetchUser();
   });
-
-  const dataToSend = {
-    userId: '123',
-    someOtherData: 'someValue'
-  };
 
   return (
     <div className="font-light p-6 flex flex-col justify-between min-h-screen gap-y-4">
@@ -43,13 +46,13 @@ const cardPlacementSuccess = () => {
                     d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                 </svg>
                 <div className="">
-                  <h1 className="font-semibold text-xl">{user ? user.name : "unkown"} <span className="font-light uppercase"> / {user ? user._id.substring(0, 4) : "0000"}</span></h1>
-                  <h2>Role: <span className="font-semibold">{user ? user.role : "unkown"}</span></h2>
-                  <h2>Card ID: <span className="font-semibold">{user ? user.cardId : "0000"}</span></h2>
+                  <h1 className="font-semibold text-xl">{user.name} <span className="font-light uppercase"> / {user._id.substring(0, 4)}</span></h1>
+                  <h2>Role: <span className="font-semibold">{user.role}</span></h2>
+                  <h2>Card ID: <span className="font-semibold">{user.cardId}</span></h2>
                 </div>
               </div>
               <div className="rounded-xl p-4 px-8 w-fit text-xl">
-                balance: <span className="font-semibold">{user ? user.balance : "0"} <span className="text-lg">DH</span></span>
+                balance: <span className="font-semibold">{user.balance} <span className="text-lg">DH</span></span>
               </div>
             </div>
           </div>
@@ -62,7 +65,7 @@ const cardPlacementSuccess = () => {
               </svg>
             </div>
           </Link>
-          <Link to={'./amount-selection'} className="flex gap-2 hover:gap-3 justify-center items-center text-xl px-4 font-semibold bg-pink-100 hover:bg-pink-200 p-2 border border-green-900 rounded transition-all ease-in-out">
+          <Link to={`./amount-selection?username=${user.username}`} className="flex gap-2 hover:gap-3 justify-center items-center text-xl px-4 font-semibold bg-pink-100 hover:bg-pink-200 p-2 border border-green-900 rounded transition-all ease-in-out">
             <h1 className="font-semibold text-xl">Proceed to Amount Selection</h1>
             <div>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
