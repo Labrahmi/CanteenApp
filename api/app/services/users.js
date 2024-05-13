@@ -17,6 +17,10 @@ export const addBalanceByUserName = async(username, amount) => {
     if (!user) {
         throw new Error('User not found');
     }
+    if (amount < 0 && user.balance + amount < 0) {
+        throw new Error('Insufficient balance');
+    }
     user.balance += Number(amount);
     await user.save();
+    return user;
 }

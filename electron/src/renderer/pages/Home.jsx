@@ -29,7 +29,7 @@ const Home = () => {
             <Link
                 onClick={() => {
                   setTimeout(() => {
-                    navigate("/register-card");
+                    navigate("/pos");
                   }, 500);
                 }}
                 to={'#'}

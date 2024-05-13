@@ -4,8 +4,8 @@ import AddFunds from './pages/AddFunds';
 import AmountSelection from './pages/AmountSelection';
 import EditCard from './pages/EditCard';
 import Home from './pages/Home';
-import RegiserCard from './pages/RegisterCard';
-import CardPlacement from './pages/cardPlacement';
+import Pos from './pages/RegisterCard';
+import CardPlacement from './pages/CardPlacement';
 import CardPlacementSuccess from './pages/cardPlacementSuccess';
 import Login from './pages/Login';
 import AmountSuccess from './pages/AmountSuccess';
@@ -22,7 +22,7 @@ export default function App() {
           <Route path="/home" element={<Home />} />
           {/*  */}
           <Route path="/add-funds" element={<AddFunds />} />
-          <Route path="/register-card" element={<RegiserCard />} />
+          <Route path="/pos" element={<Pos />} />
           <Route path="/edit-card" element={<EditCard />} />
           {/*  */}
           <Route path="/card-placement" element={<CardPlacement />} />
