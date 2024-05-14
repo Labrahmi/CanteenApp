@@ -2,14 +2,13 @@ import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import AddFunds from './pages/AddFunds';
 import AmountSelection from './pages/AmountSelection';
-import EditCard from './pages/EditCard';
+import EditCard from './pages/AdminPanel';
 import Home from './pages/Home';
-import Pos from './pages/RegisterCard';
+import Pos from './pages/Pos';
 import CardPlacement from './pages/CardPlacement';
 import CardPlacementSuccess from './pages/cardPlacementSuccess';
 import Login from './pages/Login';
 import AmountSuccess from './pages/AmountSuccess';
-//
 import AppProvider from './providers/app';
 
 export default function App() {

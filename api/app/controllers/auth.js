@@ -3,7 +3,6 @@ import { loginService, registerService } from '../services/auth.js';
 
 export const login = async (req, res) => {
     try {
-        console.log("body:", req.body);
         const { username, password } = req.body;
         const token = await loginService(username, password);
         const user = await User.findOne({ username: username });

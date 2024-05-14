@@ -116,7 +116,7 @@ const Pos = () => {
       alert('User not found');
       return;
     }
-    const message = selectedDish == null ? 'Please select a dish!' : `Hey ${user.username}. You have selected: ${dishList[selectedDish].name}`;
+    const message = selectedDish == null ? 'Please select a dish!' : `Are you sure?. amount: ${dishList[selectedDish].price} Dh, User: ${user.username}`;
     if (selectedDish == null) {
       alert(message);
       return;
@@ -196,6 +196,7 @@ const Pos = () => {
           <input disabled ref={userField_1} value={user.name} placeholder='Name' type="text" className='p-2 bg-zinc-100 rounded text-sm font-light animate-pulse' />
           <input disabled ref={userField_2} value={user.role} placeholder='Role' type="text" className='p-2 bg-zinc-100 rounded text-sm font-light animate-pulse' />
           <input disabled ref={userField_3} value={user.balance} placeholder='Balance' type="text" className='p-2 bg-zinc-100 rounded text-sm font-light animate-pulse' />
+          <button onClick={rest_all_the_data} className='text-zinc-600 my-2 text-sm' >Clear</button>
         </div>
         {/* 1 */}
         <div ref={dishesParent} className='grid grid-cols-2 flex-col gap-4'>

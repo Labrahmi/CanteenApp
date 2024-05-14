@@ -49,6 +49,10 @@ const Login = () => {
       })
       .catch((error) => {
         console.error('Error:', error);
+        setTimeout(() => {
+          appendError('Error occurred while logging in [internet issue!]');
+          submitRef.current.classList.remove('animate-pulse', 'grayscale', 'cursor-default');
+        }, 2000);
       });
   }
 

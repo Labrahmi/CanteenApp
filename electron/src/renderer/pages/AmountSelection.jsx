@@ -189,7 +189,8 @@ const AmountSelection = (data) => {
                 }} className={"bg-zinc-50 p-3 rounded-lg border flex justify-center items-center gap-x-2 font-thin my-2 transition-all ease-in-out duration-200"}>clear</button>
                 <button onClick={(e) => {
                   if (amount != 0) {
-                    if (confirm("Are you sure?")) {
+                    let message = "Are you sure you want to add " + amount + " DH to the card?";
+                    if (confirm(message)) {
                       e.currentTarget.classList.add('animate-pulse', 'cursor-default');
                       e.currentTarget.disabled = true;
                       addBalanceToCard();
