@@ -6,7 +6,7 @@ export const login = async (req, res) => {
         const { username, password } = req.body;
         const token = await loginService(username, password);
         const user = await User.findOne({ username: username });
-        if (user.role === 'student') {
+        if (user.role != 'admin' && user.role != 'staff') {
             res.status(401).json({ error: 'You are not authorized to access this resource' });
             return;
         }
