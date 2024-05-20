@@ -27,7 +27,7 @@ const YearSchema = new mongoose.Schema({
 });
 
 const AttendanceSchema = new mongoose.Schema({
-    date: { type: Date, required: true },
+    date: { type: Date, required: true }, // 7:00 AM
     year: { type: mongoose.Schema.Types.ObjectId, ref: 'Year' },
     students: [
         {

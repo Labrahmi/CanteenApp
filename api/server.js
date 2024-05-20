@@ -1,17 +1,29 @@
 import app from './app/index.js'
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cron from 'node-cron';
 
 // Load environment variables
 dotenv.config();
 
 // Connect to local MongoDB
-await mongoose.connect(process.env.MONGO_URI, {});
+mongoose.connect(process.env.MONGO_URI, {});
 
 // Confirm connection to MongoDB
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', console.log.bind(console, 'Connected to MongoDB'));
+
+// Schedule a task to run at 6:00 AM every day (UTC, `depending on the server timezone`)
+cron.schedule(`0 6 * * *`, async () => {
+  try {
+    var date = new Date();
+    const time = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    console.log('Running task at:', time);
+  } catch (error) {
+    console.error('Error creating new row:', error);
+  }
+});
 
 // Start the server
 const port = process.env.PORT || 3000;

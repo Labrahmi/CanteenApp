@@ -1,4 +1,4 @@
-import { getAllUsers, getUserByUsername, addBalanceByUserName } from '../services/users.js';
+import { getAllUsers, getUserByUsername, getUserByCardId, addBalanceByUserName } from '../services/users.js';
 
 export const listUsers = async (req, res) => {
   try {
@@ -13,7 +13,7 @@ export const listUsers = async (req, res) => {
   }
 };
 
-export const getUser = async (req, res) => {
+export const listUserByUsername = async (req, res) => {
   try {
     let username = req.params.username;
     if (!username) {
@@ -31,7 +31,27 @@ export const getUser = async (req, res) => {
   catch (err) {
     res.status(404).json({ error: err.message });
   }
-}
+};
+
+export const listUserByCardId = async (req, res) => {
+  try {
+    let cardId = req.params.cardId;
+    if (!cardId) {
+      res.status(400).json({ error: "Card ID is required" });
+      return;
+    }
+    const user = await getUserByCardId(cardId);
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+    user.password = undefined;
+    res.json(user);
+  }
+  catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};
 
 export const addBalance = async (req, res) => {
   try {
@@ -46,5 +66,4 @@ export const addBalance = async (req, res) => {
   } catch (err) {
     res.status(404).json({ error: err.message });
   }
-}
-
+};

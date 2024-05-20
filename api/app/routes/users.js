@@ -6,7 +6,8 @@ import authMiddleware from '../middlewares/authMiddleware.js';
 const router = express.Router();
 
 router.get('/', cacheNoStore, /* authMiddleware, */ controller.listUsers);
-router.get('/:username', cacheNoStore, /* authMiddleware, */ controller.getUser);
+router.get('/username/:username', cacheNoStore, /* authMiddleware, */ controller.listUserByUsername);
+router.get('/cardId/:cardId', cacheNoStore, /* authMiddleware, */ controller.listUserByCardId);
 router.post('/:username/addBalance', cacheNoStore, /* authMiddleware, */ controller.addBalance);
 
 export default router;
