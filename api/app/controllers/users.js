@@ -1,4 +1,6 @@
-import { getAllUsers, getUserByUsername, getUserByCardId, addBalanceByUserName } from '../services/users.js';
+import { getAllUsers, getUserByUsername, getUserByCardId, addBalanceByUserName, getUserById } from '../services/users.js';
+import { postTransaction } from '../services/transactions.js';
+
 
 export const listUsers = async (req, res) => {
   try {
@@ -61,9 +63,31 @@ export const addBalance = async (req, res) => {
       res.status(400).json({ error: "Username and Amount are required" });
       return;
     }
-    await addBalanceByUserName(username, amount);
+    const user = await addBalanceByUserName(username, amount);
+    // Create a transaction
+    const transaction = await postTransaction(user, amount, "top-up");
+    console.log(transaction);
     res.json({ success: "Balance Added Successfully" });
   } catch (err) {
     res.status(404).json({ error: err.message });
+  }
+};
+
+export const listUserById = async (req, res) => {
+  try {
+    let id = req.params.id;
+    if (!id) {
+      res.status(400).json({ error: "ID is required" });
+      return;
+    }
+    const user = await getUserById(id);
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+    user.password = undefined;
+    res.json(user); 
+  } catch (error) {
+    res.status(404).json({ error: error.message });
   }
 };

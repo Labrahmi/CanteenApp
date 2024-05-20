@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/', cacheNoStore, /* authMiddleware, */ controller.listUsers);
 router.get('/username/:username', cacheNoStore, /* authMiddleware, */ controller.listUserByUsername);
+router.get('/id/:id', cacheNoStore, /* authMiddleware, */ controller.listUserById);
 router.get('/cardId/:cardId', cacheNoStore, /* authMiddleware, */ controller.listUserByCardId);
 router.post('/:username/addBalance', cacheNoStore, /* authMiddleware, */ controller.addBalance);
 

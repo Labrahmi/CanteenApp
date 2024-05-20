@@ -16,6 +16,10 @@ export const getUserByCardId = async (cardId) => {
     });
 };
 
+export const getUserById = async (id) => {
+    return await User.findById(id);
+};
+
 export const addBalanceByUserName = async (username, amount) => {
     let user = await User.findOne({
         username: username

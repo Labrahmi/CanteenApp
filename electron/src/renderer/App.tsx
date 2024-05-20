@@ -2,7 +2,7 @@ import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import AddFunds from './pages/AddFunds';
 import AmountSelection from './pages/AmountSelection';
-import EditCard from './pages/AdminPanel';
+import History from './pages/History';
 import Home from './pages/Home';
 import Pos from './pages/Pos';
 import CardPlacement from './pages/CardPlacement';
@@ -22,7 +22,7 @@ export default function App() {
           {/*  */}
           <Route path="/add-funds" element={<AddFunds />} />
           <Route path="/pos" element={<Pos />} />
-          <Route path="/edit-card" element={<EditCard />} />
+          <Route path="/history" element={<History />} />
           {/*  */}
           <Route path="/card-placement" element={<CardPlacement />} />
           <Route path="/card-placement/success" element={<CardPlacementSuccess />} />

@@ -24,7 +24,7 @@ const YearSchema = new mongoose.Schema({
     students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     timeTable: [TimeTableSchema],
     description: { type: String, default: 'none' }
-});
+}, { timestamps: true });
 
 const AttendanceSchema = new mongoose.Schema({
     date: { type: Date, required: true }, // 7:00 AM
@@ -36,7 +36,7 @@ const AttendanceSchema = new mongoose.Schema({
         }
     ],
     description: { type: String, default: 'none' }
-});
+}, { timestamps: true });
 
 const Year = mongoose.model('Year', YearSchema);
 const Attendance = mongoose.model('Attendance', AttendanceSchema);

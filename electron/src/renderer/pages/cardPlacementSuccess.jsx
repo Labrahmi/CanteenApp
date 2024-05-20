@@ -25,14 +25,10 @@ const cardPlacementSuccess = () => {
     navigate('/home');
   }
 
-  // router.get('/username/:username', cacheNoStore, /* authMiddleware, */ controller.listUserByUsername);
-  // router.get('/cardId/:cardId', cacheNoStore, /* authMiddleware, */ controller.listUserByCardId);
-
   useEffect(() => {
     async function fetchUser() {
       let response = await fetch('http://127.0.0.1:3000/api/users/cardId/' + cardID);
       let user = await response.json();
-      console.log(user);
       setUser(user);
       if (user.error) {
         console.log('Error:', user.error);

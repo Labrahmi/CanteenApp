@@ -8,7 +8,7 @@ import canteen_back from '../../../assets/canteen_back.png'
 
 const Home = () => {
   const navigate = useNavigate();
-  // console.log(localStorage.getItem('token'));
+  // console.log('token: ', localStorage.getItem('token'));
   return (
     <div className="font-light p-6 flex flex-col justify-between min-h-screen gap-y-4 bg-background bg-cover">
       <Header data={{ disabledBack: true }} />
@@ -40,12 +40,12 @@ const Home = () => {
             <Link
                 onClick={() => {
                   setTimeout(() => {
-                    navigate("/edit-card");
+                    navigate("/history");
                   }, 500);
                 }}
                 to={'#'}
                 className="group bg-white shadow-2xl shadow-zinc-300 cursor-pointer rounded-lg p-8  text-center min-h-[16rem] hover:scale-[1.01] relative overflow-hidden flex justify-center items-center transition-all ease-in-out duration-500">
-                <div className="font-thin text-pink-950 text-3xl absolute z-20 bg-pink-100 p-2 px-4 rounded-xl uppercase">Admin Panel</div>
+                <div className="font-thin text-pink-950 text-3xl absolute z-20 bg-pink-100 p-2 px-4 rounded-xl uppercase">History</div>
                 <img src={editCard} alt="add funds" className="absolute top-4 right-4 w-52 h-52 opacity-50 group-hover:opacity-100 duration-500" />
             </Link>
         </div>

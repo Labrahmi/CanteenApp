@@ -14,13 +14,14 @@ import { app } from 'electron';
 const Pos = () => {
 
   const navigate = useNavigate();
-
-  const dishesParent = useRef(null);
   //
+  const dishesParent = useRef(null);
   const userField_1 = useRef(null);
   const userField_2 = useRef(null);
   const userField_3 = useRef(null);
+  const userField_4_id = useRef(null);
   //
+  const [clientCardID, setClientCardID] = useState('');
   const [selectedDish, setSelectedDish] = useState(null);
   const [user, setUser] = useState({
     name: "",
@@ -63,9 +64,13 @@ const Pos = () => {
   ]
   //
   //  ----------------------------------------------------------------------------------------------------------
-  async function fetchUser() {
-    let response = await fetch('http://127.0.0.1:3000/api/users/student');
+  async function fetchUser(cardID) {
+    let response = await fetch('http://127.0.0.1:3000/api/users/cardID/' + cardID);
     let user = await response.json();
+    if (user.error) {
+      appendMessage(user.error, 'error');
+      return;
+    }
     setUser(user);
     userField_1.current.classList.remove('animate-pulse');
     userField_2.current.classList.remove('animate-pulse');
@@ -77,7 +82,6 @@ const Pos = () => {
   // |
   //  ----------------------------------------------------------------------------------------------------------
   const appendMessage = (messge, status) => {
-    console.log(messge, status);
     const messageColor = status === 'error' ? 'bg-red-500' : 'bg-green-500';
     const errorElement = document.createElement('p');
     errorElement.classList.add(`${messageColor}`, 'text-lg', 'text-white', 'text-lg', 'p-3', 'px-5', 'rounded-lg', 'font-light', 'text-center', 'cursor-default', 'fixed', 'bottom-4', 'right-4');
@@ -99,6 +103,7 @@ const Pos = () => {
       balance: "",
       username: "",
     });
+    setClientCardID('');
     userField_1.current.classList.add('animate-pulse');
     userField_2.current.classList.add('animate-pulse');
     userField_3.current.classList.add('animate-pulse');
@@ -183,8 +188,31 @@ const Pos = () => {
   // });
   //----------------------------------------------------------------------------------------------------------
 
-  const itemClasses = 'flex border bg-white border-r-0 border-t-0 shadow-2xl shadow-zinc-100 gap-1 justify-start p-2 items-center rounded-xl w-64 transition-all duration-200 ease-in-out cursor-pointer';
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === 'Enter' && clientCardID.length != 10) {
+        rest_all_the_data();
+        return;
+      }
+      if (e.key === 'Enter' && clientCardID.length === 10) {
+        fetchUser(clientCardID);
+        setClientCardID('');
+        return;
+      }
+      if (Number(e.key) >= 0 && Number(e.key) <= 9) {
+        let cardID = String(clientCardID) + String(e.key);
+        setClientCardID(cardID);
+      }
+    };
 
+    document.addEventListener('keypress', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keypress', handleKeyPress);
+    };
+  }, [clientCardID]);
+
+  const itemClasses = 'flex border bg-white border-r-0 border-t-0 shadow-2xl shadow-zinc-100 gap-1 justify-start p-2 items-center rounded-xl w-64 transition-all duration-200 ease-in-out cursor-pointer';
 
   return (
     <div className="font-light p-6 flex flex-col justify-between min-h-screen gap-y-4">
@@ -192,10 +220,11 @@ const Pos = () => {
       <main className='flex justify-center gap-4'>
         {/* 0 */}
         <div className='p-4 rounded-xl flex flex-col gap-2 justify-center'>
-          <h1 onClick={fetchUser} className='font-semibold'>User Informations</h1>
-          <input disabled ref={userField_1} value={user.name} placeholder='Name' type="text" className='p-2 bg-zinc-100 rounded text-sm font-light animate-pulse' />
-          <input disabled ref={userField_2} value={user.role} placeholder='Role' type="text" className='p-2 bg-zinc-100 rounded text-sm font-light animate-pulse' />
-          <input disabled ref={userField_3} value={user.balance} placeholder='Balance' type="text" className='p-2 bg-zinc-100 rounded text-sm font-light animate-pulse' />
+          <h1 className='font-semibold'>User Informations</h1>
+          <input disabled ref={userField_1} value={user.name} placeholder='Name' type="text" className='p-2 bg-zinc-100 rounded text-sm font-light animate-pulse border' />
+          <input disabled ref={userField_2} value={user.role} placeholder='Role' type="text" className='p-2 bg-zinc-100 rounded text-sm font-light animate-pulse border' />
+          <input disabled ref={userField_3} value={user.balance} placeholder='Balance' type="text" className='p-2 bg-zinc-100 rounded text-sm font-light animate-pulse border' />
+          {/* <input ref={userField_4_id} placeholder='cardID' type="text" className='p-2 bg-zinc-50 rounded text-sm font-light outline-none border' /> */}
           <button onClick={rest_all_the_data} className='text-zinc-600 my-2 text-sm' >Clear</button>
         </div>
         {/* 1 */}

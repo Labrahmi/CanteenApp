@@ -1,10 +1,23 @@
 import { getAllTransactions, postTransaction } from '../services/transactions.js';
-import { addBalanceByUserName } from '../services/users.js';
+import { addBalanceByUserName, getUserById } from '../services/users.js';
 
 export const listTransactions = async (req, res) => {
     try {
+        const transactions_with_users = [];
         const transactions = await getAllTransactions();
-        res.json(transactions);
+        if (!transactions) {
+            res.status(404).json({ error: "No transactions found" });
+            return;
+        }
+        for (let i = 0; i < transactions.length; i++) {
+            const user = await getUserById(transactions[i].userId);
+            const transObj = {
+                transaction: transactions[i],
+                user: user
+            }
+            transactions_with_users.push(transObj);
+        }
+        res.json(transactions_with_users);
     }
     catch (err) {
         res.status(404).json({ error: err.message });
