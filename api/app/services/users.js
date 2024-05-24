@@ -33,4 +33,14 @@ export const addBalanceByUserName = async (username, amount) => {
     user.balance += Number(amount);
     await user.save();
     return user;
-}
+};
+
+
+export const getUsersByQuery = async (query) => {
+    return await User.find({
+        $or: [
+            { name: { $regex: query, $options: 'i' } },
+            { cardId: { $regex: query, $options: 'i' } }
+        ]
+    }, { password: 0 });
+};

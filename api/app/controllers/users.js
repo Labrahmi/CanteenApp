@@ -1,6 +1,5 @@
-import { getAllUsers, getUserByUsername, getUserByCardId, addBalanceByUserName, getUserById } from '../services/users.js';
-import { postTransaction } from '../services/transactions.js';
-
+import { getAllUsers, getUserByUsername, getUserByCardId, addBalanceByUserName, getUserById, getUsersByQuery } from '../services/users.js';
+import { postTransaction, getTransactionsByUserId } from '../services/transactions.js';
 
 export const listUsers = async (req, res) => {
   try {
@@ -90,4 +89,26 @@ export const listUserById = async (req, res) => {
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
+};
+
+export const searchUsers = async (req, res) => {
+
+  try {
+    let query = req.query.query;
+    if (!query) {
+      res.status(400).json({ error: "Query is required" });
+      return;
+    }
+    const users = await getUsersByQuery(query);
+    const newUsers = [];
+    for (let i = 0; i < users.length; i++) {
+      const transactions = await getTransactionsByUserId(users[i]._id);
+      newUsers.push({ user: users[i], transactions: transactions });
+    }
+    res.json(newUsers);
+  }
+  catch (err) {
+    res.status(404).send(err.message);
+  }
+
 };

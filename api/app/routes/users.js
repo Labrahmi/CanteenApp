@@ -9,6 +9,9 @@ router.get('/', cacheNoStore, /* authMiddleware, */ controller.listUsers);
 router.get('/username/:username', cacheNoStore, /* authMiddleware, */ controller.listUserByUsername);
 router.get('/id/:id', cacheNoStore, /* authMiddleware, */ controller.listUserById);
 router.get('/cardId/:cardId', cacheNoStore, /* authMiddleware, */ controller.listUserByCardId);
+
+router.get('/search', cacheNoStore, /* authMiddleware, */ controller.searchUsers);
+
 router.post('/:username/addBalance', cacheNoStore, /* authMiddleware, */ controller.addBalance);
 
 export default router;
