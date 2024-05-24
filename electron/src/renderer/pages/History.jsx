@@ -124,7 +124,7 @@ const History = () => {
 
 
   return (
-    <div className="font-light p-6 flex flex-col justify-between min-h-screen gap-y-4 bg-white">
+    <div className="font-light p-6 flex flex-col justify-between min-h-screen gap-2 bg-white">
       <Header />
       <main className='h-[80vh] w-full overflow-scroll self-start justify-self-start p-4 rounded-xl'>
         <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -140,10 +140,10 @@ const History = () => {
               <div className='my-8 space-y-4'>
                 <h1 className='text-2xl font-thin select-none'>⌘ Last Month Transactions</h1>
                 <div className='grid grid-cols-3 gap-8'>
-                  <div className='group text-white bg-gradient-to-tr from-green-600 to-green-200 border border-green-400 shadow-zinc-200 shadow-2xl p-8 rounded-xl flex justify-between items-end cursor-pointer hover:brightness-95 transition-all duration-200 ease-in-out'>
+                  <div className='group text-cyan-50 bg-gradient-to-tr from-cyan-600 to-cyan-100 border border-cyan-400 shadow-zinc-200 shadow-2xl p-8 rounded-xl flex justify-between items-end cursor-pointer hover:brightness-95 transition-all duration-200 ease-in-out'>
                     <div className='space-y-2'>
                       <h1 className='font-thin text-lg'>Total Top-ups</h1>
-                      <h1 className='text-4xl'>{insights[0].amount}.00dh</h1>
+                      <h1 className='text-4xl font-semibold'>{insights[0].amount}.00dh</h1>
                     </div>
                     <div>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-12 h-12 group-hover:scale-105 transition-all duration-200 ease-in-out">
@@ -151,10 +151,10 @@ const History = () => {
                       </svg>
                     </div>
                   </div>
-                  <div className='group text-white bg-gradient-to-tr from-rose-600 to-rose-200 border border-rose-400 shadow-zinc-200 shadow-2xl p-8 rounded-xl flex justify-between items-end cursor-pointer hover:brightness-95 transition-all duration-200'>
+                  <div className='group text-rose-50 bg-gradient-to-tr from-rose-600 to-rose-100 border border-rose-400 shadow-zinc-200 shadow-2xl p-8 rounded-xl flex justify-between items-end cursor-pointer hover:brightness-95 transition-all duration-200 ease-in-out'>
                     <div className='space-y-2'>
                       <h1 className='font-thin text-lg'>Total Purchases</h1>
-                      <h1 className='text-4xl'>{insights[1].amount}.00dh</h1>
+                      <h1 className='text-4xl font-semibold'>{insights[1].amount}.00dh</h1>
                     </div>
                     <div>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-12 h-12 group-hover:scale-105 transition-all duration-200 ease-in-out">
@@ -162,10 +162,10 @@ const History = () => {
                       </svg>
                     </div>
                   </div>
-                  <div className='group text-white bg-gradient-to-tr from-cyan-600 to-cyan-200 border border-cyan-400 shadow-zinc-200 shadow-2xl p-8 rounded-xl flex justify-between items-end cursor-pointer hover:brightness-95 transition-all duration-200'>
+                  <div className='group text-slate-50 bg-gradient-to-tr from-slate-600 to-slate-100 border border-slate-400 shadow-zinc-200 shadow-2xl p-8 rounded-xl flex justify-between items-end cursor-pointer hover:brightness-95 transition-all duration-200 ease-in-out'>
                     <div className='space-y-2'>
                       <h1 className='font-thin text-lg'>Active Users</h1>
-                      <h1 className='text-4xl'>{insights[2].amount}</h1>
+                      <h1 className='text-4xl font-semibold'>{insights[2].amount}</h1>
                     </div>
                     <div>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-12 h-12 group-hover:scale-105 transition-all duration-200 ease-in-out">
@@ -176,7 +176,7 @@ const History = () => {
                 </div>
               </div>
               <div className='flex py-4'></div>
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col gap-2'>
                 {transactions.map((transaction, index) => {
                   let color = transaction.transaction.transactionType === 'top-up' ? 'bg-blue-50' : 'bg-red-50';
                   let textColor = 'text-zinc-900';
@@ -187,7 +187,7 @@ const History = () => {
                     <li key={index} className={`${color} p-4 ${textColor} rounded-xl font-thin list-none cursor-default transition-all ease-in-out duration-300 flex items-center justify-between border ${hoverColor}`}>
                       <div className='flex divide-x'>
                         <h1 className='px-4 w-[14rem] overflow-hidden'>{transaction.user.name}</h1>
-                        <h1 className='px-4 w-[8rem] overflow-hidden'>{transaction.transaction.amount}.00 dh</h1>
+                        <h1 className='px-4 w-[8rem] overflow-hidden'>{transaction.transaction.amount}.00dh</h1>
                         <h1 className='px-4 w-[20rem] overflow-hidden'>{dateFormatted}</h1>
                       </div>
                       <div className='flex justify-center gap-2'>
@@ -246,10 +246,10 @@ const History = () => {
                             </AccordionSummary>
                             <AccordionDetails>
                               <div className='w-full'>
-                                <div className='text-green-800 bg-gradient-to-tr from-green-50 to-white border p-4 rounded-xl flex gap-4 justify-between items-center cursor-pointer hover:brightness-[0.99] transition-all duration-200'>
-                                  <div className='text-green-800 bg-white border p-4 rounded-xl flex gap-4 justify-between items-center cursor-pointer transition-all duration-200'>
+                                <div className='text-green-800 bg-gradient-to-tr from-green-50 to-white border p-4 rounded-xl flex gap-2 justify-between items-center cursor-pointer hover:brightness-[0.99] transition-all duration-200'>
+                                  <div className='text-green-800 bg-white border p-4 rounded-xl flex gap-2 justify-between items-center cursor-pointer transition-all duration-200'>
                                     <h1 className=''>Balance</h1>
-                                    <h2 className='font-semibold text-xl'>{user.user.balance}.00DH</h2>
+                                    <h2 className='font-semibold text-xl'>{user.user.balance}.00dh</h2>
                                   </div>
                                   <div className='text-right text-sm'>
                                     <h1 className=''>{user.user.role}</h1>
@@ -267,7 +267,7 @@ const History = () => {
                                     return (
                                       <li key={index} className={`p-4 ${color} text-sm rounded-xl font-thin list-none cursor-default transition-all ease-in-out duration-300 flex items-center justify-between border`}>
                                         <div className='flex'>
-                                          <h1 className='overflow-hidden'> {transaction.amount}.00 dh</h1>
+                                          <h1 className='overflow-hidden'> {transaction.amount}.00dh</h1>
                                           <h1 className='overflow-hidden px-4'>{createdAtString}</h1>
                                         </div>
                                         <div className='flex justify-center items-center gap-2'>

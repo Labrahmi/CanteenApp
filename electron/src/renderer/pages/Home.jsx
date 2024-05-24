@@ -22,7 +22,7 @@ const Home = () => {
                   }, 500);
                 }}
                 to={'#'}
-                className="group bg-white shadow-2xl shadow-zinc-300 cursor-pointer rounded-lg p-8  text-center min-h-[16rem] hover:scale-[1.01] relative overflow-hidden flex justify-center items-center transition-all ease-in-out duration-500">
+                className="group bg-white shadow-2xl shadow-zinc-300 cursor-pointer rounded-xl p-8  text-center min-h-[16rem] hover:scale-[1.01] relative overflow-hidden flex justify-center items-center transition-all ease-in-out duration-500">
                 <div className="font-thin text-pink-950 text-3xl absolute z-20 bg-pink-100 p-2 px-4 rounded-xl uppercase">Add Balance To Card</div>
                 <img src={fundIcon} alt="add funds" className="absolute top-4 right-4 w-52 h-52 opacity-50 group-hover:opacity-100 duration-500" />
             </Link>
@@ -33,7 +33,7 @@ const Home = () => {
                   }, 500);
                 }}
                 to={'#'}
-                className="group bg-white shadow-2xl shadow-zinc-300 cursor-pointer rounded-lg p-8  text-center min-h-[16rem] hover:scale-[1.01] relative overflow-hidden flex justify-center items-center transition-all ease-in-out duration-500">
+                className="group bg-white shadow-2xl shadow-zinc-300 cursor-pointer rounded-xl p-8  text-center min-h-[16rem] hover:scale-[1.01] relative overflow-hidden flex justify-center items-center transition-all ease-in-out duration-500">
                 <div className="font-thin text-pink-950 text-3xl absolute z-20 bg-pink-100 p-2 px-4 rounded-xl uppercase">Point Of Sale</div>
                 <img src={newCard} alt="add funds" className="absolute top-4 right-4 w-52 h-52 opacity-50 group-hover:opacity-100 duration-500" />
             </Link>
@@ -44,7 +44,7 @@ const Home = () => {
                   }, 500);
                 }}
                 to={'#'}
-                className="group bg-white shadow-2xl shadow-zinc-300 cursor-pointer rounded-lg p-8  text-center min-h-[16rem] hover:scale-[1.01] relative overflow-hidden flex justify-center items-center transition-all ease-in-out duration-500">
+                className="group bg-white shadow-2xl shadow-zinc-300 cursor-pointer rounded-xl p-8  text-center min-h-[16rem] hover:scale-[1.01] relative overflow-hidden flex justify-center items-center transition-all ease-in-out duration-500">
                 <div className="font-thin text-pink-950 text-3xl absolute z-20 bg-pink-100 p-2 px-4 rounded-xl uppercase">History</div>
                 <img src={editCard} alt="add funds" className="absolute top-4 right-4 w-52 h-52 opacity-50 group-hover:opacity-100 duration-500" />
             </Link>

@@ -15,7 +15,7 @@ const Login = () => {
 
   const appendError = (error) => {
     const errorElement = document.createElement('p');
-    errorElement.classList.add('bg-red-500', 'text-lg', 'text-white', 'text-lg', 'p-3', 'px-5', 'rounded-lg', 'font-light', 'text-center', 'cursor-default', 'fixed', 'bottom-4', 'right-4');
+    errorElement.classList.add('bg-red-500', 'text-lg', 'text-white', 'text-lg', 'p-3', 'px-5', 'rounded-xl', 'font-light', 'text-center', 'cursor-default', 'fixed', 'bottom-4', 'right-4');
     errorElement.innerText = error + ' ' + '👮‍♂️';
     submitRef.current.parentElement.appendChild(errorElement);
     setTimeout(() => {
@@ -61,19 +61,19 @@ const Login = () => {
       <Header data={{ disabledBack: true }} />
       <main className='flex w-full justify-center'>
         <div className="p-4 flex flex-col gap-2 min-w-[24rem]">
-          <input ref={usernameRef} required type="text" placeholder="Username" className="p-4 border border-pink-100 rounded-lg outline-none" />
+          <input ref={usernameRef} required type="text" placeholder="Username" className="p-4 border border-pink-100 rounded-xl outline-none" />
           <input onKeyDown={(e) => {
             if (e.key === 'Enter') {
               setTimeout(() => {
                 loginAPI(usernameRef.current.value, passwordRef.current.value);
               }, 100);
             }
-          }} ref={passwordRef} required type="password" placeholder="Password" className="p-4 border border-pink-100 rounded-lg outline-none" />
+          }} ref={passwordRef} required type="password" placeholder="Password" className="p-4 border border-pink-100 rounded-xl outline-none" />
           <button ref={submitRef} onClick={(e) => {
             setTimeout(() => {
               loginAPI(usernameRef.current.value, passwordRef.current.value);
             }, 100);
-          }} type="submit" className="p-2 border border-pink-600 rounded-lg bg-pink-500 hover:brightness-95 text-white font-semibold">Login</button>
+          }} type="submit" className="p-2 border border-pink-600 rounded-xl bg-pink-500 hover:brightness-95 text-white font-semibold">Login</button>
         </div>
       </main>
       <Footer data={{ disabled: true }} />

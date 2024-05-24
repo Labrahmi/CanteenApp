@@ -16,18 +16,15 @@ export default function App() {
     <AppProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Pos />} />
           <Route path="/home" element={<Home />} />
-
           <Route path="/add-funds" element={<AddFunds />} />
           <Route path="/pos" element={<Pos />} />
           <Route path="/history" element={<History />} />
-
           <Route path="/card-placement" element={<CardPlacement />} />
           <Route path="/card-placement/success" element={<CardPlacementSuccess />} />
           <Route path="/card-placement/success/amount-selection" element={<AmountSelection />} />
           <Route path="/card-placement/success/amount-selection/success" element={<AmountSuccess />} />
-          {/*  */}
           <Route path="*" element={
             <div className='p-16'>
               <h1 className='font-thin text-2xl'>404 Not Found</h1>

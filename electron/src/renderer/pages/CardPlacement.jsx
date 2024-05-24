@@ -43,9 +43,9 @@ const CardPlacement = () => {
           <h1 className="font-semibold text-3xl">Card Placement</h1>
           <div className="flex py-2"></div>
           <h2><span className="font-thin animate-pulse">Please place your card on the reader</span></h2>
-          <h2><input onChange={handleInputChange} value={cardID} ref={inputRef} maxLength={10} style={{ caretColor: 'black' }} className='outline-none text-xs rounded p-2' type="text" /></h2>
+          <h2><input onChange={handleInputChange} value={cardID} ref={inputRef} maxLength={10} style={{ caretColor: 'black' }} className='outline-none text-xs rounded-xl p-2' type="text" /></h2>
           <div className="flex justify-start items-center gap-2 my-4">
-            <Link to={"/home"} className="flex gap-2 justify-center items-center text-xl px-4 font-semibold bg-zinc-100 hover:bg-zinc-200 p-2 border border-zinc-900 rounded w-fit">
+            <Link to={"/home"} className="flex gap-2 justify-center items-center text-xl px-4 font-semibold bg-zinc-100 hover:bg-zinc-200 p-2 border border-zinc-900 rounded-xl w-fit">
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />

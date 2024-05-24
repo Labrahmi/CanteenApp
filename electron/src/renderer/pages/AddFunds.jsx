@@ -25,7 +25,7 @@ const AddFunds = () => {
     //           <div className="flex py-2"></div>
     //           <h2 className="text-2xl flex justify-center items-center gap-2">
     //               <span className="font-thin">Please press</span>
-    //               <Link to={"/card-placement"} className="flex gap-2 hover:gap-3 justify-center items-center text-xl px-4 font-semibold bg-green-100 hover:bg-green-200 p-2 border border-green-900 rounded transition-all ease-in-out">
+    //               <Link to={"/card-placement"} className="flex gap-2 hover:gap-3 justify-center items-center text-xl px-4 font-semibold bg-green-100 hover:bg-green-200 p-2 border border-green-900 rounded-xl transition-all ease-in-out">
     //                   <h1 className="font-semibold text-xl">Add Balance</h1>
     //                   <div>
     //                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
