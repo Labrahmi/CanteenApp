@@ -19,6 +19,10 @@ const Pos = () => {
   const userField_2 = useRef(null);
   const userField_3 = useRef(null);
   const userField_4_id = useRef(null);
+
+  const mainDishElement = useRef(null);
+  const [isMainDishSelected, setIsMainDishSelected] = useState(false); // -----------------<<<<<<<<<<<<<<<<
+
   const [clientCardID, setClientCardID] = useState('');
   const [selectedDish, setSelectedDish] = useState(null);
   const [user, setUser] = useState({
@@ -31,27 +35,27 @@ const Pos = () => {
   const dishList = [
     {
       name: 'Hotdog',
-      price: 1.00,
+      price: 3.00,
       image: dish_1
     },
     {
       name: 'Cupcake',
-      price: 30.00,
+      price: 5.00,
       image: dish_2
     },
     {
       name: 'Donuts',
-      price: 30.00,
+      price: 7.00,
       image: dish_3
     },
     {
       name: 'Pizza',
-      price: 30.00,
+      price: 10.00,
       image: dish_4
     },
     {
       name: 'Scrambled Eggs',
-      price: 30.00,
+      price: 15.00,
       image: dish_5
     },
     {
@@ -108,6 +112,8 @@ const Pos = () => {
     dishesParent.current.childNodes.forEach((child) => {
       child.classList.remove('bg-pink-800', 'text-white');
     });
+    setIsMainDishSelected(false);
+    mainDishElement.current.classList.remove('bg-pink-800', 'text-white');
   }
   //  ----------------------------------------------------------------------------------------------------------
   // |
@@ -173,18 +179,28 @@ const Pos = () => {
       child.classList.remove('bg-pink-800', 'text-white');
     });
     e.currentTarget.classList.add('bg-pink-800', 'text-white');
+    setIsMainDishSelected(false);
+    mainDishElement.current.classList.remove('bg-pink-800', 'text-white');
   };
   //----------------------------------------------------------------------------------------------------------
   // |
   // |
   // |
+  // |
   //  ----------------------------------------------------------------------------------------------------------
-  // window.addEventListener('keypress', (e) => {
-  //   if (e.key === 'Enter') {
-  //     alert('Enter key pressed');
-  //   }
-  // });
-  //----------------------------------------------------------------------------------------------------------
+  const handleMainDishClick = (e) => {
+    if (isMainDishSelected) {
+      setIsMainDishSelected(false);
+      mainDishElement.current.classList.remove('bg-pink-800', 'text-white');
+      return;
+    }
+    setIsMainDishSelected(true);
+    mainDishElement.current.classList.add('bg-pink-800', 'text-white');
+    dishesParent.current.childNodes.forEach((child) => {
+      child.classList.remove('bg-pink-800', 'text-white');
+    });
+    setSelectedDish(null);
+  };
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -202,9 +218,7 @@ const Pos = () => {
         setClientCardID(cardID);
       }
     };
-
     document.addEventListener('keypress', handleKeyPress);
-
     return () => {
       document.removeEventListener('keypress', handleKeyPress);
     };
@@ -222,16 +236,15 @@ const Pos = () => {
           <input disabled ref={userField_1} value={user.name} placeholder='Name' type="text" className='p-2 bg-zinc-50 rounded-xl text-sm font-light animate-pulse border' />
           <input disabled ref={userField_2} value={user.role} placeholder='Role' type="text" className='p-2 bg-zinc-50 rounded-xl text-sm font-light animate-pulse border' />
           <input disabled ref={userField_3} value={user.balance} placeholder='Balance' type="text" className='p-2 bg-zinc-50 rounded-xl text-sm font-light animate-pulse border' />
-          {/* <input ref={userField_4_id} placeholder='cardID' type="text" className='p-2 bg-zinc-50 rounded-xl text-sm font-light outline-none border' /> */}
           <button onClick={rest_all_the_data} className='text-zinc-600 my-2 text-sm' >Clear</button>
         </div>
         {/* 1 */}
         <div className='flex gap-4'>
-          <div className='p-8 gap-2 rounded-xl bg-white border shadow-2xl shadow-zinc-100 w-64 flex flex-col justify-center items-center cursor-pointer'>
-            <h1 className='font-medium text-zinc-800 text-2xl'>Main Lunch</h1>
+          <div onClick={handleMainDishClick} ref={mainDishElement} className='p-8 gap-2 rounded-xl bg-white select-none border shadow-2xl shadow-zinc-100 w-64 flex flex-col justify-center items-center cursor-pointer transition-all duration-300 ease-in-out'>
+            <h1 className='font-medium text-2xl'>Main Lunch</h1>
             <img className='w-36' src={main_dish} alt="main dishe" />
           </div>
-          <div className='py-4 flex justify-center items-center'>or</div>
+          <div className='py-4 flex justify-center items-center text-zinc-700 cursor-default'>or</div>
           <div ref={dishesParent} className='grid grid-cols-2 flex-col gap-4'>
             {dishList.map((dish, index) => (
               <div onClick={(e) => {
