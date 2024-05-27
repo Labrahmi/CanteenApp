@@ -7,6 +7,8 @@ const AmountSelection = (data) => {
 
   const navigate = useNavigate();
 
+  let [selectedSubscription, setSelectedSubscription] = useState(null); // -----------------------------<<<<<<<<<<<<<<
+
   let [user, setUser] = useState({
     _id: "0",
     name: "null",
@@ -14,7 +16,15 @@ const AmountSelection = (data) => {
     password: "null",
     cardId: "null",
     balance: "null",
-    role: "null"
+    role: "null",
+    subscriptionPlan: {
+      planName: "free",
+      price: 0,
+      description: "Free Plan",
+      status: "active",
+      startDate: "",
+      endDate: "",
+    }
   });
 
   const { search } = useLocation();
@@ -23,15 +33,54 @@ const AmountSelection = (data) => {
   const choice_1_ref = useRef(null);
   const choice_2_ref = useRef(null);
   const choice_3_ref = useRef(null);
+  const choice_4_ref = useRef(null);
+  const choice_5_ref = useRef(null);
+
+  var availablePlans = [
+    {
+      planName: "firstTerm",
+      description: "First Term Plan",
+      price: 4000,
+      ref: choice_3_ref,
+      index: 3
+    },
+    {
+      planName: "fullYear",
+      description: "Annual Plan",
+      price: 9000,
+      ref: choice_1_ref,
+      index: 1
+    },
+    {
+      planName: "secondTerm",
+      description: "Second Term Plan",
+      price: 3000,
+      ref: choice_4_ref,
+      index: 4
+    },
+    {
+      planName: "OneWeek",
+      description: "One Week Plan",
+      price: 240,
+      ref: choice_2_ref,
+      index: 2
+    },
+    {
+      planName: "thirdTerm",
+      description: "Third Term Plan",
+      price: 3000,
+      ref: choice_5_ref,
+      index: 5
+    },
+  ];
+
   const submitButtonRef = useRef(null);
   const amountInputRef = useRef(null);
-
-  const choices_ref = [choice_1_ref, choice_2_ref, choice_3_ref];
+  const choices_ref = [choice_1_ref, choice_2_ref, choice_3_ref, choice_4_ref, choice_5_ref];
 
   let defaultClasses = "bg-zinc-50 p-3 rounded-xl border flex justify-center items-center gap-x-2 font-thin my-2 transition-all ease-in-out duration-200 cursor-default";
-  let defaultOptionsClasses = "bg-zinc-50 p-3 rounded-xl border flex justify-center items-center gap-x-2 transition-all ease-in-out duration-200";
+  let defaultOptionsClasses = "bg-zinc-50 p-4 rounded-xl border flex justify-between items-center gap-x-2 transition-all ease-in-out duration-200";
 
-  //
   let [amount, setAmount] = useState(0);
   let [inputValue, setInputValue] = useState("");
   let [customClasses, setCustomClasses] = useState(defaultClasses);
@@ -39,9 +88,6 @@ const AmountSelection = (data) => {
   //
 
   const username = params.get('username');
-
-
-
 
   useEffect(() => {
     //
@@ -58,25 +104,19 @@ const AmountSelection = (data) => {
     //
   }, []);
 
-  //
   const styleChanger = (c) => {
 
-    if (c == 1) {
-      setAmount(150);
-    }
-    //
-    if (c == 2) {
-      setAmount(300);
-    }
-    //
-    if (c == 3) {
-      setAmount(1200);
-    }
-
-    choice_1_ref.current.classList.remove('invert');
-    choice_2_ref.current.classList.remove('invert');
-    choice_3_ref.current.classList.remove('invert');
-    choices_ref[c - 1].current.classList.add('invert');
+    // --------------------------------------------------
+    availablePlans.forEach((plan, index) => {
+      if (plan.index == c) {
+        plan.ref.current.classList.add('invert');
+        setAmount(plan.price);
+        setSelectedSubscription(plan);
+      } else {
+        plan.ref.current.classList.remove('invert');
+      }
+    });
+    // --------------------------------------------------
     submitButtonRef.current.classList.add('invert', 'font-semibold');
   }
 
@@ -91,16 +131,41 @@ const AmountSelection = (data) => {
   }
 
   const addBalanceToCard = async () => {
-    let status = await fetch(`http://127.0.0.1:3000/api/users/${username}/addBalance?amount=${amount}`, {
-      method: "POST"
-    });
-    if (status.status == 200) {
-      navigate("./success");
-    } else {
-      console.log(status);
-      appendError("an error occurred");
+    try {
+      if (selectedSubscription == null) {
+        console.log("136");
+        let status = await fetch(`http://127.0.0.1:3000/api/users/${username}/addBalance?amount=${amount}`, { method: "POST" });
+        if (status.status == 200) {
+          navigate("./success");
+        } else {
+          appendError("Error: " + status.statusText);
+        }
+      } else {
+        console.log("143");
+        console.log("Selected Subscription: ", selectedSubscription);
+        let status = await fetch(`http://127.0.0.1:3000/api/users/${username}/subscribe`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            plan: selectedSubscription.planName
+          })
+        });
+        if (status.status == 200) {
+          navigate("./success");
+        } else {
+          appendError("Error: " + status.statusText);
+        }
+      }
+
+    } catch (error) {
+      appendError("Error: " + error);
     }
   }
+
+
+
 
   return (
     <div className="font-light p-6 flex flex-col justify-between min-h-screen gap-y-4">
@@ -117,10 +182,11 @@ const AmountSelection = (data) => {
                       d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   </svg>
                   <div className="">
-                    <h1 className="font-semibold text-xl">{user.name}</h1>
+                    <h1 className="font-semibold text-lg">{user.name}</h1>
                     <h2>Role: <span className="font-semibold">{user.role}</span></h2>
                     <h2>Card ID: <span className="font-semibold">{user.cardId}</span></h2>
                     <h2>Balance: <span className="font-semibold">{user.balance} <span className="text-lg">DH</span></span></h2>
+                    <h2>Current Plan: <span className="font-semibold">{user.subscriptionPlan.description}</span></h2>
                   </div>
                 </div>
               </div>
@@ -129,7 +195,7 @@ const AmountSelection = (data) => {
           {/* --------------- */}
           <div className="p-8 rounded-xl">
             <h1 className="text-xl font-semibold">Preset Options</h1>
-            <div className="flex flex-col gap-y-4 mt-4">
+            <div className="grid grid-cols-2 flex-col gap-4 mt-4">
               <div className="flex justify-between p-6 items-center gap-y-4 gap-4 border bg-zinc-50 rounded-xl overflow-hidden">
                 <input
                   ref={amountInputRef}
@@ -152,59 +218,43 @@ const AmountSelection = (data) => {
                   min={0}
                 />
               </div>
-              <button ref={choice_1_ref} onClick={(e) => {
-                setSelectedOption(1);
-                styleChanger(1);
-              }} className={defaultOptionsClasses}>
-                <div className="font-thin">
-                  Enough for <span className="font-normal">5 meals</span>
-                </div>
-                <div className="font-medium bg-zinc-100 border p-2 rounded-xl">
-                  150.00 <span className="font-normal">DH</span>{" "}
-                </div>
-              </button>
-              <button ref={choice_2_ref} onClick={(e) => {
-                setSelectedOption(2);
-                styleChanger(2);
-              }} className={defaultOptionsClasses}>
-                <div className="font-thin">
-                  <span className="font-normal">1-week</span> allowance
-                </div>
-                <div className="font-medium bg-zinc-100 border p-2 rounded-xl">
-                  300.00 <span className="font-normal">DH</span>{" "}
-                </div>
-              </button>
-              <button ref={choice_3_ref} onClick={(e) => {
-                setSelectedOption(3);
-                styleChanger(3);
-              }} className={defaultOptionsClasses}>
-                <div className="font-thin">
-                  <span className="font-normal">1 month</span> allowance
-                </div>
-                <div className="font-medium bg-zinc-100 border p-2 rounded-xl">
-                  1200.00 <span className="font-normal">DH</span>{" "}
-                </div>
-              </button>
-              <div className='w-full flex gap-2'>
-                <button onClick={(e) => {
-                  choices_ref.forEach(element => {
-                    element.current.classList.remove("invert");
-                    setInputValue("");
-                    submitButtonRef.current.classList.remove('invert', 'font-semibold', 'cursor-pointer');
-                    setAmount(0);
-                  });
-                }} className={"bg-zinc-50 p-3 rounded-xl border flex justify-center items-center gap-x-2 font-thin my-2 transition-all ease-in-out duration-200"}>clear</button>
-                <button onClick={(e) => {
-                  if (amount != 0) {
-                    let message = "Are you sure you want to add " + amount + " DH to the card? [ " + user.name + " ]";
-                    if (confirm(message)) {
-                      e.currentTarget.classList.add('animate-pulse', 'cursor-default');
-                      e.currentTarget.disabled = true;
-                      addBalanceToCard();
-                    }
+              {/* ------------------------------------------------------------------------------------------------------------------ */}
+              {availablePlans.map((plan, index) => {
+                return (
+                  <button key={index} ref={plan.ref} onClick={(e) => {
+                    setSelectedOption(plan.index);
+                    styleChanger(plan.index);
+                  }} className={defaultOptionsClasses}>
+                    <div className="">{plan.description}</div>
+                    <div className="font-medium bg-zinc-100 border p-2 rounded-xl">
+                      {plan.price} <span className="font-normal">DH</span>{" "}
+                    </div>
+                  </button>
+                );
+              })}
+              {/* ------------------------------------------------------------------------------------------------------------------ */}
+            </div>
+            <div className='w-full flex gap-2 my-4'>
+              <button onClick={(e) => {
+                choices_ref.forEach(element => {
+                  element.current.classList.remove("invert");
+                  setInputValue("");
+                  submitButtonRef.current.classList.remove('invert', 'font-semibold', 'cursor-pointer');
+                  setAmount(0);
+                  setSelectedSubscription(null);
+                });
+              }} className={"bg-zinc-50 p-3 rounded-xl border flex justify-center items-center gap-x-2 font-thin my-2 transition-all ease-in-out duration-200"}>clear</button>
+              {/* --------------------------------------------------------------------------- */}
+              <button onClick={(e) => {
+                if (amount != 0 || selectedSubscription != null) {
+                  let message = "Are you sure you want to add " + amount + " DH to the card? [ " + user.name + " ]";
+                  if (confirm(message)) {
+                    e.currentTarget.classList.add('animate-pulse', 'cursor-default');
+                    e.currentTarget.disabled = true;
+                    addBalanceToCard();
                   }
-                }} ref={submitButtonRef} className={"bg-zinc-50 p-3 rounded-xl border flex justify-center items-center gap-x-2 my-2 transition-all ease-in-out duration-200 w-full"}>Submit</button>
-              </div>
+                }
+              }} ref={submitButtonRef} className={"bg-zinc-50 p-3 rounded-xl border flex justify-center items-center gap-x-2 my-2 transition-all ease-in-out duration-200 w-full"}>Submit</button>
             </div>
           </div>
         </div>

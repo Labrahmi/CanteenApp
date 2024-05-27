@@ -1,4 +1,4 @@
-import { getAllUsers, getUserByUsername, getUserByCardId, addBalanceByUserName, getUserById, getUsersByQuery } from '../services/users.js';
+import { getAllUsers, getUserByUsername, getUserByCardId, addBalanceByUserName, getUserById, getUsersByQuery, putUserSubscription } from '../services/users.js';
 import { postTransaction, getTransactionsByUserId } from '../services/transactions.js';
 
 export const listUsers = async (req, res) => {
@@ -70,6 +70,22 @@ export const addBalance = async (req, res) => {
   }
 };
 
+export const subscribe = async (req, res) => {
+  try {
+    let username = req.params.username;
+    let { plan } = req.body;
+    console.log(username, plan);
+    if (!username || !plan) {
+      res.status(400).json({ error: "Username and Plan are required" });
+      return;
+    }
+    await putUserSubscription(username, plan);
+    res.json({ success: "Subscribed Successfully" });
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+}
+
 export const listUserById = async (req, res) => {
   try {
     let id = req.params.id;
@@ -83,7 +99,7 @@ export const listUserById = async (req, res) => {
       return;
     }
     user.password = undefined;
-    res.json(user); 
+    res.json(user);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }

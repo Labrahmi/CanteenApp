@@ -11,5 +11,6 @@ router.get('/id/:id', cacheNoStore, /* authMiddleware, */ controller.listUserByI
 router.get('/cardId/:cardId', cacheNoStore, /* authMiddleware, */ controller.listUserByCardId);
 router.get('/search', cacheNoStore, /* authMiddleware, */ controller.searchUsers);
 router.post('/:username/addBalance', cacheNoStore, /* authMiddleware, */ controller.addBalance);
+router.post('/:username/subscribe', cacheNoStore, /* authMiddleware, */ controller.subscribe);
 
 export default router;

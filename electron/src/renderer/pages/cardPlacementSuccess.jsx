@@ -14,7 +14,15 @@ const cardPlacementSuccess = () => {
     password: "null",
     cardId: "null",
     balance: "null",
-    role: "null"
+    role: "null",
+    subscriptionPlan: {
+      planName: "free",
+      price: 0,
+      description: "Free Plan",
+      status: "active",
+      startDate: "",
+      endDate: "",
+    }
   });
 
   const { search } = useLocation();
@@ -63,11 +71,10 @@ const cardPlacementSuccess = () => {
                   <h1 className="font-semibold text-xl">{user.name} <span className="font-light uppercase"> / {user._id.substring(0, 4)}</span></h1>
                   <h2>Role: <span className="font-semibold">{user.role}</span></h2>
                   <h2>Card ID: <span className="font-semibold">{user.cardId}</span></h2>
+                  <h2>Current Plan: <span className="font-semibold">{user.subscriptionPlan.description}</span></h2>
                 </div>
               </div>
-              <div className="rounded-xl p-4 px-8 w-fit text-xl">
-                balance: <span className="font-semibold">{user.balance} <span className="text-lg">DH</span></span>
-              </div>
+              <div className="rounded-xl p-4 px-8 w-fit text-xl">balance: <span className="font-semibold">{user.balance} <span className="text-lg">DH</span></span></div>
             </div>
           </div>
         </div>
