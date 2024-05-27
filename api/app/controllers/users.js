@@ -63,9 +63,7 @@ export const addBalance = async (req, res) => {
       return;
     }
     const user = await addBalanceByUserName(username, amount);
-    // Create a transaction
     const transaction = await postTransaction(user, amount, "top-up");
-    console.log(transaction);
     res.json({ success: "Balance Added Successfully" });
   } catch (err) {
     res.status(404).json({ error: err.message });

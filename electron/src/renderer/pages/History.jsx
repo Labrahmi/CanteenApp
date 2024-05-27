@@ -178,17 +178,39 @@ const History = () => {
               <div className='flex py-4'></div>
               <div className='flex flex-col gap-2'>
                 {transactions.map((transaction, index) => {
-                  let color = transaction.transaction.transactionType === 'top-up' ? 'bg-blue-50' : 'bg-red-50';
-                  let textColor = 'text-zinc-900';
-                  let hoverColor = 'hover:saturate-125';
-                  let rotate = transaction.transaction.transactionType === 'top-up' ? 'rotate-0' : 'rotate-180';
-                  let dateFormatted = new Date(transaction.transaction.createdAt).toUTCString();
+                  let color = "";
+                  let rotate = "";
+                  let textColor = "text-zinc-900";
+                  let hoverColor = "hover:saturate-125";
+                  //
+                  if (transaction.transaction.transactionType === 'top-up') {
+                    color = 'bg-blue-50';
+                    rotate = 'rotate-0';
+                  } else if (transaction.transaction.transactionType === 'purchase') {
+                    color = 'bg-red-50';
+                    rotate = 'rotate-180';
+                  } else {
+                    color = 'bg-yellow-50';
+                    rotate = 'rotate-90';
+                  }
+                  //
+                  let dateFormatted = new Date(transaction.transaction.createdAt);
+                  dateFormatted = `${dateFormatted.getDate()}/${dateFormatted.getMonth()}/${dateFormatted.getFullYear()} ${dateFormatted.getHours()}:${dateFormatted.getMinutes()}`;
+                  //
+                  var itemsString = '';
+                  transaction.transaction.items.forEach((item, index) => {
+                    itemsString += `${item.name} `;
+                    if (index < transaction.transaction.items.length - 1) {
+                      itemsString += ', ';
+                    }
+                  });
                   return (
                     <li key={index} className={`${color} p-4 ${textColor} rounded-xl font-thin list-none cursor-default transition-all ease-in-out duration-300 flex items-center justify-between border ${hoverColor}`}>
-                      <div className='flex divide-x'>
-                        <h1 className='px-4 w-[14rem] overflow-hidden'>{transaction.user.name}</h1>
+                      <div className='flex items-center divide-x'>
+                        <h1 className='px-4 w-[12rem] overflow-hidden'>{transaction.user.name}</h1>
                         <h1 className='px-4 w-[8rem] overflow-hidden'>{transaction.transaction.amount}.00dh</h1>
-                        <h1 className='px-4 w-[20rem] overflow-hidden'>{dateFormatted}</h1>
+                        <h1 className='px-4 w-[10rem] overflow-hidden'>{dateFormatted}</h1>
+                        <h1 className='px-4 overflow-hidden text-zinc-700'>{itemsString}</h1>
                       </div>
                       <div className='flex justify-center gap-2'>
                         <h1 className='font-thin'> {transaction.transaction.transactionType} </h1>
@@ -208,7 +230,7 @@ const History = () => {
               </div>
               <div className='flex py-4'></div>
               <div className='flex flex-col items-center'>
-                <div className='flex flex-col gap-2 min-w-[34rem]'>
+                <div className='flex flex-col gap-2 w-full'>
                   <div className='border rounded-xl w-full overflow-hidden flex justify-center items-center'>
                     <input maxLength={10} onChange={handleCardIdChange} value={userCardIdValue} ref={cardIdRef} className='p-3 px-4 outline-none w-full' placeholder='Card ID' type="text" />
                     <div onClick={() => { cardIdRef.current.value = ''; setUserCardIdValue(''); setSearchedUsers([]) }} className='px-2 rounded-full cursor-pointer'>
@@ -228,10 +250,9 @@ const History = () => {
                   <div className='flex py-2'></div>
                   {/* */}
                   {Array.isArray(searchedUsers) && searchedUsers.map((user, index) => {
-                    console.log(user);
                     return (
                       <div key={index}>
-                        <div className='border rounded-xl hover:bg-rose-50 cursor-pointer w-full outline-none max-w-[34rem] transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap font-normal select-none'>
+                        <div className='border rounded-xl hover:bg-rose-50 cursor-pointer outline-none w-full transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap font-normal select-none'>
                           <Accordion className=''>
                             <AccordionSummary
                               expandIcon={<ArrowDownwardIcon />}
@@ -262,17 +283,37 @@ const History = () => {
                                   {Array.isArray(user.transactions) && user.transactions.map((transaction, index) => {
                                     const createdAt = new Date(transaction.createdAt);
                                     const createdAtString = `${createdAt.getDate()}/${createdAt.getMonth()}/${createdAt.getFullYear()} ${createdAt.getHours()}:${createdAt.getMinutes()}`
-                                    const rotate = transaction.transactionType === 'top-up' ? 'rotate-0' : 'rotate-180';
-                                    const color = transaction.transactionType === 'top-up' ? 'bg-blue-50' : 'bg-red-50';
+                                    var rotate;
+                                    var color;
+                                    if (transaction.transactionType === 'top-up') {
+                                      rotate = 'rotate-0';
+                                      color = 'bg-blue-50';
+                                    }
+                                    if (transaction.transactionType === 'purchase') {
+                                      rotate = 'rotate-180';
+                                      color = 'bg-red-50';
+                                    }
+                                    if (transaction.transactionType === 'subscription') {
+                                      rotate = 'rotate-90';
+                                      color = 'bg-yellow-50';
+                                    }
+                                    var itemsString = '';
+                                    transaction.items.forEach((item, index) => {
+                                      itemsString += `${item.name} `;
+                                      if (index < transaction.items.length - 1) {
+                                        itemsString += ', ';
+                                      }
+                                    });
                                     return (
                                       <li key={index} className={`p-4 ${color} text-sm rounded-xl font-thin list-none cursor-default transition-all ease-in-out duration-300 flex items-center justify-between border`}>
                                         <div className='flex'>
                                           <h1 className='overflow-hidden'> {transaction.amount}.00dh</h1>
                                           <h1 className='overflow-hidden px-4'>{createdAtString}</h1>
+                                          <h1 className='overflow-hidden px-4'>{itemsString}</h1>
                                         </div>
                                         <div className='flex justify-center items-center gap-2'>
                                           <h1 className='font-thin text-xs'> {transaction.transactionType} </h1>
-                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 text-zinc-500 ${rotate}`}>
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 text-zinc-500 scale-75 ${rotate}`}>
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
                                           </svg>
                                         </div>

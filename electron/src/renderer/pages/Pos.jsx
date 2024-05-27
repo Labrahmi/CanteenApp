@@ -10,6 +10,8 @@ import dish_4 from '../../../assets/dish_4.png'
 import dish_5 from '../../../assets/dish_5.png'
 import dish_6 from '../../../assets/dish_6.png'
 import main_dish from '../../../assets/main_dish.png'
+const error_sound = '../../../assets/error_sound.mp3'
+const success_sound = '../../../assets/success.mp3'
 import { app } from 'electron';
 
 const Pos = () => {
@@ -18,18 +20,27 @@ const Pos = () => {
   const userField_1 = useRef(null);
   const userField_2 = useRef(null);
   const userField_3 = useRef(null);
+  const userField_4 = useRef(null);
   const userField_4_id = useRef(null);
 
   const mainDishElement = useRef(null);
   const [isMainDishSelected, setIsMainDishSelected] = useState(false); // -----------------<<<<<<<<<<<<<<<<
 
   const [clientCardID, setClientCardID] = useState('');
-  const [selectedDish, setSelectedDish] = useState(null);
+  const [selectedDish, setSelectedDish] = useState([]);
   const [user, setUser] = useState({
     name: "",
     role: "",
     balance: "",
     username: "",
+    subscriptionPlan: {
+      planName: '',
+      price: 0,
+      description: '',
+      status: '',
+      startDate: '',
+      endDate: ''
+    }
   });
 
   const dishList = [
@@ -77,6 +88,7 @@ const Pos = () => {
     userField_1.current.classList.remove('animate-pulse');
     userField_2.current.classList.remove('animate-pulse');
     userField_3.current.classList.remove('animate-pulse');
+    userField_4.current.classList.remove('animate-pulse');
   }
   //  ----------------------------------------------------------------------------------------------------------
   // |
@@ -91,24 +103,33 @@ const Pos = () => {
     window.document.body.appendChild(errorElement);
     setTimeout(() => {
       errorElement.remove();
-    }, 4000);
+    }, 7000);
   }
   //  ----------------------------------------------------------------------------------------------------------
   // |
   // |
   // |
   const rest_all_the_data = () => {
-    setSelectedDish(null);
+    setSelectedDish([]);
     setUser({
       name: "",
       role: "",
       balance: "",
       username: "",
+      subscriptionPlan: {
+        planName: '',
+        price: 0,
+        description: '',
+        status: '',
+        startDate: '',
+        endDate: ''
+      }
     });
     setClientCardID('');
     userField_1.current.classList.add('animate-pulse');
     userField_2.current.classList.add('animate-pulse');
     userField_3.current.classList.add('animate-pulse');
+    userField_4.current.classList.add('animate-pulse');
     dishesParent.current.childNodes.forEach((child) => {
       child.classList.remove('bg-pink-800', 'text-white');
     });
@@ -125,19 +146,36 @@ const Pos = () => {
       alert('User not found');
       return;
     }
-    const message = selectedDish == null ? 'Please select a dish!' : `Are you sure?. amount: ${dishList[selectedDish].price} Dh, User: ${user.username}`;
-    if (selectedDish == null) {
-      alert(message);
+    // ------------------------[ new stuff ]-----------------------------
+    if (selectedDish.length == 0 && !isMainDishSelected) {
+      alert('Please select a dish!');
       return;
     }
+    var transactionType = "purchase";
+    var selectedItems = [];
+    var totalAmount = 0;
+    var message = "";
+    if (selectedDish.length > 0) {
+      selectedDish.forEach((index) => {
+        totalAmount += dishList[index].price;
+        selectedItems.push(dishList[index]);
+      });
+      message = `Are you sure you want to purchase ${selectedDish.length} dish(es) for ${totalAmount} Dh?`;
+    } else if (isMainDishSelected) {
+      totalAmount = 60;
+      message = `Are you sure you want to purchase the main dish?`;
+      transactionType = "subscription";
+    }
+    // ------------------------[ new stuff ]-----------------------------
     if (confirm(message)) {
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
       //
       var urlencoded = new URLSearchParams();
       urlencoded.append("username", `${user.username}`);
-      urlencoded.append("amount", `${dishList[selectedDish].price}`);
-      urlencoded.append("transactionType", "purchase");
+      urlencoded.append("amount", totalAmount);
+      urlencoded.append("transactionType", transactionType);
+      urlencoded.append("items", JSON.stringify(selectedItems));
       //
       var requestOptions = {
         method: 'POST',
@@ -163,27 +201,23 @@ const Pos = () => {
       }
     }
   };
-  //----------------------------------------------------------------------------------------------------------
+  //  ----------------------------------------------------------------------------------------------------------
   // |
   // |
   // |
   //  ----------------------------------------------------------------------------------------------------------
   const handleDishClick = (index, e) => {
-    if (selectedDish == index) {
-      setSelectedDish(null);
+    if (selectedDish.includes(index)) {
+      setSelectedDish(selectedDish.filter((item) => item !== index));
       e.currentTarget.classList.remove('bg-pink-800', 'text-white');
       return;
     }
-    setSelectedDish(index);
-    dishesParent.current.childNodes.forEach((child) => {
-      child.classList.remove('bg-pink-800', 'text-white');
-    });
+    setSelectedDish([...selectedDish, index]);
     e.currentTarget.classList.add('bg-pink-800', 'text-white');
     setIsMainDishSelected(false);
     mainDishElement.current.classList.remove('bg-pink-800', 'text-white');
   };
-  //----------------------------------------------------------------------------------------------------------
-  // |
+  //  ----------------------------------------------------------------------------------------------------------
   // |
   // |
   // |
@@ -199,9 +233,9 @@ const Pos = () => {
     dishesParent.current.childNodes.forEach((child) => {
       child.classList.remove('bg-pink-800', 'text-white');
     });
-    setSelectedDish(null);
+    setSelectedDish([]);
   };
-
+  //  ----------------------------------------------------------------------------------------------------------
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.key === 'Enter' && clientCardID.length != 10) {
@@ -224,7 +258,7 @@ const Pos = () => {
     };
   }, [clientCardID]);
 
-  const itemClasses = 'flex border bg-white shadow-2xl shadow-zinc-100 gap-1 justify-start p-2 items-center rounded-xl w-64 transition-all duration-200 ease-in-out cursor-pointer';
+  const itemClasses = 'flex border bg-white shadow-2xl shadow-zinc-100 gap-1 justify-start p-2 items-center rounded-xl w-64 transition-all duration-200 ease-in-out cursor-pointer select-none';
 
   return (
     <div className="font-light p-6 flex flex-col justify-between min-h-screen gap-y-4">
@@ -236,6 +270,7 @@ const Pos = () => {
           <input disabled ref={userField_1} value={user.name} placeholder='Name' type="text" className='p-2 bg-zinc-50 rounded-xl text-sm font-light animate-pulse border' />
           <input disabled ref={userField_2} value={user.role} placeholder='Role' type="text" className='p-2 bg-zinc-50 rounded-xl text-sm font-light animate-pulse border' />
           <input disabled ref={userField_3} value={user.balance} placeholder='Balance' type="text" className='p-2 bg-zinc-50 rounded-xl text-sm font-light animate-pulse border' />
+          <input disabled ref={userField_4} value={user.subscriptionPlan.description} placeholder='subscription Plan' type="text" className='p-2 bg-zinc-50 rounded-xl text-sm font-light animate-pulse border' />
           <button onClick={rest_all_the_data} className='text-zinc-600 my-2 text-sm' >Clear</button>
         </div>
         {/* 1 */}

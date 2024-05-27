@@ -12,12 +12,12 @@ export const getTransactionsByUserId = async (userId) => {
     return await Transaction.find({ userId: userId }).sort({ createdAt: -1 }).limit(30);
 };
 
-export const postTransaction = async (user, amount, transactionType) => {
+export const postTransaction = async (user, amount, transactionType, items) => {
     let transaction = new Transaction({
         userId: user._id,
         amount: amount,
         transactionType: transactionType,
-        items: []
+        items: items
     });
     await transaction.save();
     return transaction;

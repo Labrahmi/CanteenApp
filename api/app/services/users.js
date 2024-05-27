@@ -20,7 +20,7 @@ export const getUserById = async (id) => {
     return await User.findById(id);
 };
 
-export const addBalanceByUserName = async (username, amount) => {
+export const addBalanceByUserName = async (username, amount, transactionType) => {
     let user = await User.findOne({
         username: username
     });
@@ -31,6 +31,9 @@ export const addBalanceByUserName = async (username, amount) => {
         throw new Error('Insufficient balance');
     }
     user.balance += Number(amount);
+    if (transactionType == 'subscription') {
+        user.subscriptionPlan.status = 'inactive';
+    }
     await user.save();
     return user;
 };
