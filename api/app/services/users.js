@@ -118,27 +118,21 @@ export const putUserSubscription = async (username, subscriptionPlan) => {
   });
   if (!user) { throw new Error('User not found'); }
   switch (subscriptionPlan) {
-    // 
     case 'free':
       user.subscriptionPlan = freePlan;
       break;
-    // 
     case 'firstTerm':
       user.subscriptionPlan = firstTermPlan;
       break;
-    // 
     case 'secondTerm':
       user.subscriptionPlan = secondTermPlan;
       break;
-    // 
     case 'thirdTerm':
       user.subscriptionPlan = thirdTermPlan;
       break;
-    // 
     case 'fullYear':
       user.subscriptionPlan = fullYearPlan;
       break;
-    // 
     case 'OneWeek':
       const currentDate = new Date();
       const endDate = new Date();

@@ -20,7 +20,7 @@ export const loginService = async (username, password) => {
     return token;
 };
 
-export const registerService = async (username, password, name, role, cardId, balance) => {
+export const registerService = async (username, password, name, role, cardId) => {
     // 1. Check if the user already exists
     const existingUser = await User.findOne({ username: username });
     if (existingUser) throw new Error('Username already exists');
@@ -35,7 +35,6 @@ export const registerService = async (username, password, name, role, cardId, ba
         password: hashedPassword,
         name: name,
         role: role,
-        balance: balance,
         cardId: cardId
         // Add other relevant fields
     });

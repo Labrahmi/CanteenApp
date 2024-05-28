@@ -21,8 +21,7 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
     try {
         const { username, password, name, role, cardId, balance } = req.body;
-
-        if (!username || !password || !name || !role || !cardId || !balance) {
+        if (!username || !password || !name || !role || !cardId) {
             throw new Error('All fields are required');
         }
         if (username.length < 4 || password.length < 4) {

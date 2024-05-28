@@ -16,7 +16,7 @@ export default function App() {
     <AppProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<History />} />
           <Route path="/home" element={<Home />} />
           <Route path="/add-funds" element={<AddFunds />} />
           <Route path="/pos" element={<Pos />} />

@@ -25,6 +25,15 @@ const History = () => {
   const [userCardIdValue, setUserCardIdValue] = useState('');
   const [transactions, setTransactions] = useState([]);
   const [value, setValue] = useState('1');
+  /// ----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  const [newUserToAdd, setNewUserToAdd] = useState({
+    name: '',
+    username: '',
+    password: '',
+    cardId: '',
+    role: 'student',
+  });
+  /// ----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   const [insights, setInsights] = useState([
     { title: 'Total Top-ups', amount: 39275.00, },
     { title: 'Total Purchases', amount: 2736.00, },
@@ -34,10 +43,10 @@ const History = () => {
     setValue(newValue);
   };
 
-
   const fullNameRef = useRef();
   const cardIdRef = useRef();
 
+  const inputRef = [useRef(), useRef(), useRef(), useRef(), useRef()];
 
   const getUser = async (userId) => {
     try {
@@ -122,6 +131,61 @@ const History = () => {
     fetchTransactions();
   }, []);
 
+  const appendMessage = (messge, status) => {
+    const messageColor = status === 'error' ? 'bg-red-500' : 'bg-green-500';
+    const errorElement = document.createElement('p');
+    errorElement.classList.add(`${messageColor}`, 'text-lg', 'text-white', 'text-lg', 'p-3', 'px-5', 'rounded-xl', 'font-light', 'text-center', 'cursor-default', 'fixed', 'bottom-4', 'right-4');
+    errorElement.innerText = messge + ' ' + '👮‍♂️';
+    window.document.body.appendChild(errorElement);
+    setTimeout(() => {
+      errorElement.remove();
+    }, 7000);
+  }
+
+  const handleAddUser = async (e) => {
+    e.preventDefault();
+    setTimeout(async () => {
+      // ----------------------------------------------------
+      if (confirm('Are you sure you want to add this user?')) {
+        const formData = new FormData(e.target);
+        const name = formData.get('name');
+        const username = formData.get('username');
+        const password = formData.get('password');
+        const cardId = formData.get('cardId');
+        const role = formData.get('role');
+        const endpoint = 'http://127.0.0.1:3000/api/auth/register';
+        // ----------------------------------------------------
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            username,
+            password,
+            cardId,
+            role,
+            balance: 0,
+          }),
+        });
+        // ----------------------------------------------------
+        const data = await response.json();
+        if (data.token) {
+          appendMessage('User added successfully', 'success');
+          for (let i = 0; i < inputRef.length; i++) {
+            inputRef[i].current.value = '';
+          }
+          inputRef[3].current.value = 'student';
+          inputRef[0].current.focus();
+        } else {
+          const error = data.error;
+          appendMessage(error, 'error');
+        }
+      }
+    }, 300);
+  };
+
 
   return (
     <div className="font-light p-6 flex flex-col justify-between min-h-screen gap-2 bg-white">
@@ -133,6 +197,7 @@ const History = () => {
               <TabList className='' onChange={handleChange} aria-label="transactions API tabs example">
                 <Tab label="All Transactions" value="1" />
                 <Tab label="Transactions by User" value="2" />
+                <Tab label="Manage Users" value="3" />
               </TabList>
             </Box>
             {/* --------------------------- */}
@@ -275,6 +340,7 @@ const History = () => {
                                   <div className='text-right text-sm'>
                                     <h1 className=''>{user.user.role}</h1>
                                     <h1 className=''>{user.user.cardId}</h1>
+                                    <h1 className=''>{user.user.subscriptionPlan.description}</h1>
                                   </div>
                                 </div>
                                 <div className='flex py-2'></div>
@@ -332,11 +398,47 @@ const History = () => {
                 </div>
               </div>
             </TabPanel>
+            {/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
+            <TabPanel className='px-[0!important]' value="3">
+              <div className='my-8 space-y-4'>
+                <h1 className='text-2xl font-thin select-none'>⌘ Add a new user</h1>
+              </div>
+              <div className='flex py-4'></div>
+              <div className='max-w-lg m-auto'>
+                {/* handleAddUser */}
+                <form onSubmit={(e) => handleAddUser(e)} className='flex flex-col justify-center items-center gap-2' action="http://127.0.0.1:3000/api/auth/register" method="post">
+                  <div className='border rounded-xl w-full overflow-hidden flex justify-center items-center'>
+                    <input ref={inputRef[0]} required minLength={4} maxLength={16} name='name' className='p-3 px-4 outline-none w-full' type="text" placeholder='Full Name' />
+                  </div>
+                  <div className='border rounded-xl w-full overflow-hidden flex justify-center items-center'>
+                    <input ref={inputRef[1]} required minLength={4} maxLength={16} name='username' className='p-3 px-4 outline-none w-full' type="text" placeholder='Username' />
+                  </div>
+                  <div className='border rounded-xl w-full overflow-hidden flex justify-center items-center'>
+                    <input ref={inputRef[2]} required minLength={4} maxLength={16} name='password' className='p-3 px-4 outline-none w-full' type="text" placeholder='Password' />
+                  </div>
+                  <div className='border rounded-xl w-full overflow-hidden flex justify-center items-center pr-3'>
+                    <select ref={inputRef[3]} name='role' defaultValue={"student"} className='p-3 px-2 outline-none w-full cursor-pointer'>
+                      <option value="student">Student</option>
+                      <option value="teacher">Teacher</option>
+                      <option value="admin">Admin</option>
+                      <option value="staff">Staff</option>
+                      <option value="parent">Parent</option>
+                    </select>
+                  </div>
+                  <div className='border rounded-xl w-full overflow-hidden flex justify-center items-center'>
+                    <input ref={inputRef[4]} required minLength={10} maxLength={10} name='cardId' className='p-3 px-4 outline-none w-full' type="text" placeholder='Card ID' />
+                  </div>
+                  <div className='border rounded-xl w-fit overflow-hidden flex justify-center items-center self-end bg-zinc-100 hover:bg-zinc-200 transition-all duration-200 ease-in-out'>
+                    <input  className='p-3 px-4 outline-none w-fit cursor-pointer' type="submit" />
+                  </div>
+                </form>
+              </div>
+            </TabPanel>
           </TabContext>
         </Box>
       </main>
       <Footer />
-    </div>
+    </div >
   );
 };
 
