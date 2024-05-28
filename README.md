@@ -1,58 +1,170 @@
-# CanteenApp
+# Canteen Management App
 
-**Overview**
+## Overview
 
-* A comprehensive solution to streamline canteen operations, providing both a robust backend API and a user-friendly Electron-based desktop application.
+The Canteen Management App is a desktop application designed to streamline the operations of school canteens. Built using Electron.js for the front end and Node.js for the backend REST API, the app provides a comprehensive solution for managing items, transactions, and user data.
 
-**Key Features**
+## Table of Contents
 
-* **User Management:** Secure login/registration, card management (registration, editing, balance updates).
-* **Item Management:** Create, modify, and manage canteen inventory listing.
-* **Transaction Handling:** Efficiently record sales transactions and track balances.
-* **Intuitive Desktop Experience:** A well-designed Electron interface for effortless canteen management.
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
 
-**Backend API (`/api`)**
+## Features
 
-* **Technology Stack:** Node.js, (Mention database used, e.g., Express.js, MongoDB)
-* **RESTful Endpoints:**
-    * `/auth` (User authentication and registration)
-    * `/items` (Item CRUD operations)
-    * `/transactions` (Recording and viewing transactions)
-    * `/users` (User profile management)
-* **Authentication:** (Describe your method: JWT, sessions, etc.)
-* **Data Modeling:** Outline relationships between items, users, and transactions.
+- **User Authentication:** Secure login for students, staff, and administrators.
+- **Item Management:** Add, edit, and remove canteen items.
+- **Transaction Management:** Track purchases and manage transactions.
+- **Attendance Tracking:** Monitor attendance of students and staff.
+- **User Management:** Manage user profiles and permissions.
+- **Responsive Design:** Optimized for desktop use with a clean and intuitive interface.
 
-**Desktop Application (`/electron`)**
+## Project Structure
 
-* **Built with:** Electron, React, Tailwind CSS (or your chosen technologies)
-* **User Interface:**
-    * Dashboard with key metrics (sales, inventory, etc.)
-    * Forms for item and user management
-    * Transaction history view with filtering/sorting
+```
+.
+├── README.md
+├── api
+│   ├── README.md
+│   ├── app
+│   │   ├── controllers
+│   │   │   ├── auth.js
+│   │   │   ├── items.js
+│   │   │   ├── transactions.js
+│   │   │   └── users.js
+│   │   ├── index.js
+│   │   ├── middlewares
+│   │   │   ├── authMiddleware.js
+│   │   │   └── cacheNoStore.js
+│   │   ├── models
+│   │   │   ├── attendance.js
+│   │   │   ├── item.js
+│   │   │   ├── transaction.js
+│   │   │   └── user.js
+│   │   ├── routes
+│   │   │   ├── auth.js
+│   │   │   ├── items.js
+│   │   │   ├── transactions.js
+│   │   │   └── users.js
+│   │   └── services
+│   │       ├── auth.js
+│   │       ├── items.js
+│   │       ├── transactions.js
+│   │       └── users.js
+│   ├── package-lock.json
+│   ├── package.json
+│   └── server.js
+├── electron
+│   ├── CHANGELOG.md
+│   ├── CODE_OF_CONDUCT.md
+│   ├── LICENSE
+│   ├── README.md
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── release
+│   │   ├── app
+│   │   │   ├── dist
+│   │   │   │   ├── main
+│   │   │   │   │   ├── main.js
+│   │   │   │   │   ├── main.js.LICENSE.txt
+│   │   │   │   │   └── preload.js
+│   │   │   ├── package-lock.json
+│   │   │   └── package.json
+│   │   └── build
+│   ├── src
+│   │   ├── __tests__
+│   │   │   └── App.test.tsx
+│   │   ├── main
+│   │   │   ├── main.ts
+│   │   │   ├── menu.ts
+│   │   │   ├── preload.ts
+│   │   │   └── util.ts
+│   │   └── renderer
+│   │       ├── App.css
+│   │       ├── App.tsx
+│   │       ├── assets
+│   │       ├── components
+│   │       ├── index.ejs
+│   │       ├── index.tsx
+│   │       ├── pages
+│   │       └── providers
+│   ├── tailwind.config.js
+│   └── tsconfig.json
+├── node_modules
+├── out
+├── package-lock.json
+└── package.json
+```
 
-**Getting Started**
+### API Directory
 
-**Prerequisites**
+- **controllers:** Handles request logic for different resources (auth, items, transactions, users).
+- **middlewares:** Custom middleware functions (e.g., authentication, caching).
+- **models:** Database models for attendance, items, transactions, and users.
+- **routes:** Defines the API endpoints and associates them with controller methods.
+- **services:** Contains business logic for various features.
 
-* Node.js (version X or later)
-* MongoDB (or your chosen database)
+### Electron Directory
 
-**Installation**
+- **src:** Source code for the Electron app.
+  - **main:** Main process scripts (e.g., main.ts, menu.ts).
+  - **renderer:** Renderer process scripts (e.g., App.tsx, components, pages).
+- **release:** Build configuration and output for the Electron app.
 
-1. `git clone https://github.com/Labrahmi/CanteenApp.git`
-2. `cd CanteenApp`
-3. `npm install` (in both the `/api` and `/electron` directories) 
+## Installation
 
-**Running the Development Environment**
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/yourusername/canteen-management-app.git
+   cd canteen-management-app
+   ```
 
-1. **API Server:** Navigate to the `/api` directory, then `npm start`.
-2. **Electron App:** Navigate to `/electron` and execute `npm start`.
+2. **Install dependencies:**
+   ```sh
+   # For the API
+   cd api
+   npm install
 
-**Deployment**
+   # For the Electron app
+   cd ../electron
+   npm install
+   ```
 
-* **API:** (Instructions based on your hosting platform - Heroku, AWS, etc.)
-* **Electron:** 
-    * Use `electron-builder` to package the app.
-    * Provide instructions for distributable file formats (.exe, .dmg, etc.)
+## Usage
 
+### Running the API
 
+1. **Start the server:**
+   ```sh
+   cd api
+   npm start
+   ```
+
+2. **API will be running at:**
+   ```
+   http://localhost:3000
+   ```
+
+### Running the Electron App
+
+1. **Start the Electron app:**
+   ```sh
+   cd electron
+   npm start
+   ```
+
+## API Documentation
+
+For detailed API documentation, refer to the [API README](api/README.md).
+
+## Contributing
+
+We welcome contributions! Please read our [Code of Conduct](electron/CODE_OF_CONDUCT.md) and [Contributing Guidelines](CONTRIBUTING.md) for more details.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](electron/LICENSE) file for details.
