@@ -74,7 +74,6 @@ export const subscribe = async (req, res) => {
   try {
     let username = req.params.username;
     let { plan } = req.body;
-    console.log(username, plan);
     if (!username || !plan) {
       res.status(400).json({ error: "Username and Plan are required" });
       return;

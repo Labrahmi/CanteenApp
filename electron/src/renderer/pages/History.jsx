@@ -428,8 +428,8 @@ const History = () => {
                   <div className='border rounded-xl w-full overflow-hidden flex justify-center items-center'>
                     <input ref={inputRef[4]} required minLength={10} maxLength={10} name='cardId' className='p-3 px-4 outline-none w-full' type="text" placeholder='Card ID' />
                   </div>
-                  <div className='border rounded-xl w-fit overflow-hidden flex justify-center items-center self-end bg-zinc-100 hover:bg-zinc-200 transition-all duration-200 ease-in-out'>
-                    <input  className='p-3 px-4 outline-none w-fit cursor-pointer' type="submit" />
+                  <div className='border rounded-xl w-full overflow-hidden flex justify-center items-center self-end bg-zinc-100 hover:bg-zinc-200 transition-all duration-200 ease-in-out'>
+                    <input className='p-3 px-4 outline-none w-full cursor-pointer' type="submit" />
                   </div>
                 </form>
               </div>
