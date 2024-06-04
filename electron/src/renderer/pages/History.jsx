@@ -50,7 +50,7 @@ const History = () => {
 
   const getUser = async (userId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:3000/api/users/id/${userId}`);
+      const response = await fetch(`http://10.12.6.8:3000/api/users/id/${userId}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -64,7 +64,7 @@ const History = () => {
     setUserFullnameValue('');
     if (e.target.value !== '') {
       try {
-        const response = await fetch(`http://127.0.0.1:3000/api/users/search?query=${e.target.value}`);
+        const response = await fetch(`http://10.12.6.8:3000/api/users/search?query=${e.target.value}`);
         const data = await response.json();
         setSearchedUsers(data);
       } catch (error) {
@@ -82,7 +82,7 @@ const History = () => {
     setUserCardIdValue('');
     if (e.target.value !== '') {
       try {
-        const response = await fetch(`http://127.0.0.1:3000/api/users/search?query=${e.target.value}`);
+        const response = await fetch(`http://10.12.6.8:3000/api/users/search?query=${e.target.value}`);
         const data = await response.json();
         setSearchedUsers(data);
       } catch (error) {
@@ -103,7 +103,7 @@ const History = () => {
 
     const fetchTransactions = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:3000/api/transactions');
+        const response = await fetch('http://10.12.6.8:3000/api/transactions');
         const data = await response.json();
         setTransactions(data);
         var totalTopUps = 0;
@@ -153,7 +153,7 @@ const History = () => {
         const password = formData.get('password');
         const cardId = formData.get('cardId');
         const role = formData.get('role');
-        const endpoint = 'http://127.0.0.1:3000/api/auth/register';
+        const endpoint = 'http://10.12.6.8:3000/api/auth/register';
         // ----------------------------------------------------
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -406,7 +406,7 @@ const History = () => {
               <div className='flex py-4'></div>
               <div className='max-w-lg m-auto'>
                 {/* handleAddUser */}
-                <form onSubmit={(e) => handleAddUser(e)} className='flex flex-col justify-center items-center gap-2' action="http://127.0.0.1:3000/api/auth/register" method="post">
+                <form onSubmit={(e) => handleAddUser(e)} className='flex flex-col justify-center items-center gap-2' action="http://10.12.6.8:3000/api/auth/register" method="post">
                   <div className='border rounded-xl w-full overflow-hidden flex justify-center items-center'>
                     <input ref={inputRef[0]} required minLength={4} maxLength={16} name='name' className='p-3 px-4 outline-none w-full' type="text" placeholder='Full Name' />
                   </div>

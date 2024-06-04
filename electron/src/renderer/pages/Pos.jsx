@@ -78,7 +78,7 @@ const Pos = () => {
   //
   //  ----------------------------------------------------------------------------------------------------------
   async function fetchUser(cardID) {
-    let response = await fetch('http://127.0.0.1:3000/api/users/cardID/' + cardID);
+    let response = await fetch('http://10.12.6.8:3000/api/users/cardID/' + cardID);
     let user = await response.json();
     if (user.error) {
       appendMessage(user.error, 'error');
@@ -185,7 +185,7 @@ const Pos = () => {
       };
       //
       try {
-        let resp = await fetch("http://127.0.0.1:3000/api/transactions", requestOptions);
+        let resp = await fetch("http://10.12.6.8:3000/api/transactions", requestOptions);
         let data = await resp.json();
         if (data.error) {
           appendMessage(data.error, 'error');

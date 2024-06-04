@@ -92,7 +92,7 @@ const AmountSelection = (data) => {
   useEffect(() => {
     //
     async function fetchUser() {
-      let response = await fetch(`http://127.0.0.1:3000/api/users/username/${username}`);
+      let response = await fetch(`http://10.12.6.8:3000/api/users/username/${username}`);
       let user = await response.json();
       setUser(user);
       if (user.error) {
@@ -134,7 +134,7 @@ const AmountSelection = (data) => {
     try {
       if (selectedSubscription == null) {
         console.log("136");
-        let status = await fetch(`http://127.0.0.1:3000/api/users/${username}/addBalance?amount=${amount}`, { method: "POST" });
+        let status = await fetch(`http://10.12.6.8:3000/api/users/${username}/addBalance?amount=${amount}`, { method: "POST" });
         if (status.status == 200) {
           navigate("./success");
         } else {
@@ -143,7 +143,7 @@ const AmountSelection = (data) => {
       } else {
         console.log("143");
         console.log("Selected Subscription: ", selectedSubscription);
-        let status = await fetch(`http://127.0.0.1:3000/api/users/${username}/subscribe`, {
+        let status = await fetch(`http://10.12.6.8:3000/api/users/${username}/subscribe`, {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
