@@ -35,7 +35,7 @@ const cardPlacementSuccess = () => {
 
   useEffect(() => {
     async function fetchUser() {
-      let response = await fetch('http://10.12.6.8:3000/api/users/cardId/' + cardID);
+      let response = await fetch('http://localhost:3000/api/users/cardId/' + cardID);
       let user = await response.json();
       setUser(user);
       if (user.error) {

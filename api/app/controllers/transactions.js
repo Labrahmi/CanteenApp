@@ -59,12 +59,12 @@ export const createTransaction = async (req, res) => {
                 }
                 // -------------------------------------------------------------- [  PREMIUM  ] --------------------------------------------------------------
                 else {
-                    if ((user.subscriptionPlan.status == 'active') && (currentDate <= user.subscriptionPlan.endDate)) {
+                    if ((user.subscriptionPlan.status == 'active') && ((currentDate >= user.subscriptionPlan.startDate) && (currentDate <= user.subscriptionPlan.endDate))) {
                         await addBalanceByUserName(username, 0, transactionType);
                         await postTransaction(user, 0, transactionType, items);
                         return res.json({ success: "Transaction Created Successfully" });
                     } else {
-                        return res.status(400).json({ error: "You've already had your meal" });
+                        return res.status(400).json({ error: "There was a problem creating the transaction" });
                     }
                 }
                 // -------------------------------------------------------------- [  --------  ] --------------------------------------------------------------

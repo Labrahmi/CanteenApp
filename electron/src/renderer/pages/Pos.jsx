@@ -3,12 +3,12 @@ import Header from 'renderer/components/Header';
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import dish_1 from '../../../assets/dish_1.png'
-import dish_2 from '../../../assets/dish_2.png'
-import dish_3 from '../../../assets/dish_3.png'
-import dish_4 from '../../../assets/dish_4.png'
-import dish_5 from '../../../assets/dish_5.png'
-import dish_6 from '../../../assets/dish_6.png'
+import dish_1 from '../../../assets/dishes_icons/dish_1.png'
+import dish_2 from '../../../assets/dishes_icons/dish_2.png'
+import dish_3 from '../../../assets/dishes_icons/dish_3.png'
+import dish_4 from '../../../assets/dishes_icons/dish_4.png'
+import dish_5 from '../../../assets/dishes_icons/dish_5.png'
+import dish_6 from '../../../assets/dishes_icons/dish_6.png'
 import main_dish from '../../../assets/main_dish.png'
 const error_sound = '../../../assets/error_sound.mp3'
 const success_sound = '../../../assets/success.mp3'
@@ -45,40 +45,40 @@ const Pos = () => {
 
   const dishList = [
     {
-      name: 'Hotdog',
-      price: 3.00,
+      name: 'Choix 1',
+      price: 1.00,
       image: dish_1
     },
     {
-      name: 'Cupcake',
-      price: 5.00,
+      name: 'Choix 2',
+      price: 2.00,
       image: dish_2
     },
     {
-      name: 'Donuts',
-      price: 7.00,
+      name: 'Choix 3',
+      price: 3.00,
       image: dish_3
     },
     {
-      name: 'Pizza',
-      price: 10.00,
+      name: 'Choix 4',
+      price: 5.00,
       image: dish_4
     },
     {
-      name: 'Scrambled Eggs',
-      price: 15.00,
+      name: 'Choix 5',
+      price: 10.00,
       image: dish_5
     },
     {
-      name: 'Fruit salad',
-      price: 30.00,
+      name: 'Choix 6',
+      price: 20.00,
       image: dish_6
     }
   ]
   //
   //  ----------------------------------------------------------------------------------------------------------
   async function fetchUser(cardID) {
-    let response = await fetch('http://10.12.6.8:3000/api/users/cardID/' + cardID);
+    let response = await fetch('http://localhost:3000/api/users/cardID/' + cardID);
     let user = await response.json();
     if (user.error) {
       appendMessage(user.error, 'error');
@@ -95,16 +95,31 @@ const Pos = () => {
   // |
   // |
   //  ----------------------------------------------------------------------------------------------------------
-  const appendMessage = (messge, status) => {
-    const messageColor = status === 'error' ? 'bg-red-500' : 'bg-green-500';
-    const errorElement = document.createElement('p');
-    errorElement.classList.add(`${messageColor}`, 'text-lg', 'text-white', 'text-lg', 'p-3', 'px-5', 'rounded-xl', 'font-light', 'text-center', 'cursor-default', 'fixed', 'bottom-4', 'right-4');
-    errorElement.innerText = messge + ' ' + '👮‍♂️';
-    window.document.body.appendChild(errorElement);
+  const appendMessage = (message, status) => {
+    const messageColor = status === 'error' ? 'bg-red-600' : 'bg-green-600';
+    const messageBackgroundColor = status === 'error' ? 'bg-red-900' : 'bg-green-900';
+    
+    // Create a full-screen invisible parent container
+    const overlay = document.createElement('div');
+    overlay.classList.add('fixed', 'inset-0', 'flex', 'items-center', 'justify-center', `${messageBackgroundColor}`, 'bg-opacity-50', 'backdrop-blur');
+  
+    // Create the message element
+    const messageElement = document.createElement('p');
+    messageElement.classList.add(`${messageColor}`, 'text-lg', 'text-white', 'p-4', 'font-semibold', 'px-6', 'rounded-xl', 'text-center', 'cursor-default');
+    messageElement.innerText = message;
+  
+    // Append the message to the overlay
+    overlay.appendChild(messageElement);
+  
+    // Append the overlay to the document body
+    window.document.body.appendChild(overlay);
+  
+    // Remove the overlay after 7 seconds
     setTimeout(() => {
-      errorElement.remove();
-    }, 7000);
-  }
+      overlay.remove();
+    }, 5000);
+  };
+  
   //  ----------------------------------------------------------------------------------------------------------
   // |
   // |
@@ -185,7 +200,7 @@ const Pos = () => {
       };
       //
       try {
-        let resp = await fetch("http://10.12.6.8:3000/api/transactions", requestOptions);
+        let resp = await fetch("http://localhost:3000/api/transactions", requestOptions);
         let data = await resp.json();
         if (data.error) {
           appendMessage(data.error, 'error');
@@ -287,8 +302,8 @@ const Pos = () => {
               }} key={index} className={itemClasses}>
                 <img className='w-20' src={dish.image} alt={dish.name} />
                 <div>
-                  <h1 className=''>{dish.name}</h1>
-                  <h2 className='text-sm font-thin'>{dish.price} Dh</h2>
+                  <h1 className='font-thin'>{dish.name}</h1>
+                  <h2 className='text-xl'>{dish.price} Dh</h2>
                 </div>
               </div>
             ))}

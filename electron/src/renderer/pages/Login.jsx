@@ -28,7 +28,7 @@ const Login = () => {
       return;
     }
     submitRef.current.classList.add('animate-pulse', 'grayscale', 'cursor-default');
-    fetch('http://10.12.6.8:3000/api/auth/login', {
+    fetch('http://localhost:3000/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -39,7 +39,7 @@ const AmountSelection = (data) => {
   var availablePlans = [
     {
       planName: "firstTerm",
-      description: "First Term Plan",
+      description: "1st Term Plan",
       price: 4000,
       ref: choice_3_ref,
       index: 3
@@ -53,7 +53,7 @@ const AmountSelection = (data) => {
     },
     {
       planName: "secondTerm",
-      description: "Second Term Plan",
+      description: "2st Term Plan",
       price: 3000,
       ref: choice_4_ref,
       index: 4
@@ -67,7 +67,7 @@ const AmountSelection = (data) => {
     },
     {
       planName: "thirdTerm",
-      description: "Third Term Plan",
+      description: "3st Term Plan",
       price: 3000,
       ref: choice_5_ref,
       index: 5
@@ -92,7 +92,7 @@ const AmountSelection = (data) => {
   useEffect(() => {
     //
     async function fetchUser() {
-      let response = await fetch(`http://10.12.6.8:3000/api/users/username/${username}`);
+      let response = await fetch(`http://localhost:3000/api/users/username/${username}`);
       let user = await response.json();
       setUser(user);
       if (user.error) {
@@ -134,7 +134,7 @@ const AmountSelection = (data) => {
     try {
       if (selectedSubscription == null) {
         console.log("136");
-        let status = await fetch(`http://10.12.6.8:3000/api/users/${username}/addBalance?amount=${amount}`, { method: "POST" });
+        let status = await fetch(`http://localhost:3000/api/users/${username}/addBalance?amount=${amount}`, { method: "POST" });
         if (status.status == 200) {
           navigate("./success");
         } else {
@@ -143,7 +143,7 @@ const AmountSelection = (data) => {
       } else {
         console.log("143");
         console.log("Selected Subscription: ", selectedSubscription);
-        let status = await fetch(`http://10.12.6.8:3000/api/users/${username}/subscribe`, {
+        let status = await fetch(`http://localhost:3000/api/users/${username}/subscribe`, {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
@@ -212,7 +212,7 @@ const AmountSelection = (data) => {
                     }
                   }}
                   value={inputValue}
-                  placeholder="Custom Amount (103 DH)"
+                  placeholder="Custom Amount"
                   className="flex w-full justify-center items-center gap-x-2 focus:outline-none bg-transparent"
                   type="number"
                   min={0}
@@ -227,7 +227,7 @@ const AmountSelection = (data) => {
                   }} className={defaultOptionsClasses}>
                     <div className="">{plan.description}</div>
                     <div className="font-medium bg-zinc-100 border p-2 rounded-xl">
-                      {plan.price} <span className="font-normal">DH</span>{" "}
+                      {/* {plan.price} <span className="font-normal">DH</span>{" "} */}
                     </div>
                   </button>
                 );
